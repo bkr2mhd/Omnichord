@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -302,7 +302,7 @@ select{border:0;outline:none;background:#1c1c1e;color:#f2f2f7;font-size:12px;col
 
       <div class="info-compact">
         <div class="current" id="current">C Major</div>
-        <div class="notes" id="notes">C · E · G</div>
+        <div class="notes" id="notes">C Â· E Â· G</div>
       </div>
 
       <div class="selectors-stack">
@@ -658,11 +658,11 @@ function renderTabs(){
       advHighlightBtn.style.background = "#1c1c1e";
       advHighlightBtn.style.color = "#8e8e93";
     } else if(chromaticHighlightState === 1){
-      advHighlightBtn.textContent = "✓ Lock Highlights";
+      advHighlightBtn.textContent = "âœ“ Lock Highlights";
       advHighlightBtn.style.background = "#3a3a3c";
       advHighlightBtn.style.color = "#fff";
     } else {
-      advHighlightBtn.textContent = "✕ Clear Highlights";
+      advHighlightBtn.textContent = "âœ• Clear Highlights";
       advHighlightBtn.style.background = "#2c2c2e";
       advHighlightBtn.style.color = "#f2f2f7";
     }
@@ -979,7 +979,7 @@ function highlightActiveChord(colorMap){
 
 function updateInfo(isActive=true){
   document.getElementById("current").textContent=getFullChordName(currentRoot, currentType);
-  document.getElementById("notes").textContent=notesFor(currentRoot, currentType).join(" · ");
+  document.getElementById("notes").textContent=notesFor(currentRoot, currentType).join(" Â· ");
   applyScaleHighlights();
   renderHarp();
 }
@@ -1249,7 +1249,7 @@ function schedule(){
   rhythmTimer=setTimeout(schedule,(60000/bpm)/sub);
 }
 
-function start(){resumeAudio();playing=true;rhythmStep=0;document.getElementById("play").textContent="■ Stop";document.getElementById("play").classList.add("playing");schedule();}
+function start(){resumeAudio();playing=true;rhythmStep=0;document.getElementById("play").textContent="â–  Stop";document.getElementById("play").classList.add("playing");schedule();}
 function stop(){playing=false;clearTimeout(rhythmTimer);rhythmTimer=null;document.getElementById("play").textContent="▶ Start";document.getElementById("play").classList.remove("playing");}
 
 function render(){
