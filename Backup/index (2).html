@@ -103,7 +103,7 @@ select{border:0;outline:none;background:#1c1c1e;color:#f2f2f7;font-size:12px;col
 
 .top-toolbar{
   background:#1c1c1e;border:1px solid #2c2c2e;border-radius:14px;padding:8px 12px;
-  display:flex;align-items:center;justify-content:space-between;gap:8px;width:100%;height:92px;position:relative;overflow:visible;
+  display:flex;align-items:center;gap:8px;width:100%;height:92px;position:relative;overflow:visible;
 }
 
 .toolbar-divider{
@@ -124,7 +124,11 @@ select{border:0;outline:none;background:#1c1c1e;color:#f2f2f7;font-size:12px;col
   display:inline-block;transition:transform 0.15s, border-radius 0.15s, background 0.15s;
 }
 .rec-btn.recording .rec-dot{
-  border-radius:2px;background:#ff453a;
+  border-radius:2px;background:#ff453a;animation:recPulse 1s infinite alternate;
+}
+@keyframes recPulse{
+  0%{transform:scale(1);opacity:1;}
+  100%{transform:scale(0.8);opacity:0.4;}
 }
 
 .record-dropdown{
@@ -141,7 +145,7 @@ select{border:0;outline:none;background:#1c1c1e;color:#f2f2f7;font-size:12px;col
 
 .info-compact{
   display:flex;flex-direction:column;align-items:center;justify-content:center;
-  width:100px;min-width:100px;height:100%;padding-right:6px;padding-left:6px;
+  width:100px;min-width:100px;height:100%;border-right:1px solid #2c2c2e;padding-right:6px;padding-left:6px;
   flex-shrink:0;text-align:center;
 }
 .current{font-size:12px;font-weight:700;line-height:1.2;text-align:center;word-break:break-word;}
@@ -149,7 +153,7 @@ select{border:0;outline:none;background:#1c1c1e;color:#f2f2f7;font-size:12px;col
 
 .selectors-stack{
   display:flex;flex-direction:column;gap:4px;height:76px;justify-content:center;
-  width:200px;min-width:200px;flex-shrink:0;overflow:hidden;
+  width:180px;min-width:180px;flex-shrink:0;overflow:hidden;
 }
 .selectors-desktop{display:flex;flex-direction:column;gap:4px;width:100%;height:100%;justify-content:center;}
 
@@ -173,16 +177,10 @@ select{border:0;outline:none;background:#1c1c1e;color:#f2f2f7;font-size:12px;col
   display: flex;
   flex-direction: column;
   gap: 4px;
-  width: 155px;
+  width: 120px;
   flex-shrink: 0;
   height: 76px;
   justify-content: center;
-}
-.articulation-sub-row {
-  display: flex;
-  gap: 4px;
-  width: 100%;
-  align-items: center;
 }
 
 .instrument-rows{
@@ -374,32 +372,27 @@ select{border:0;outline:none;background:#1c1c1e;color:#f2f2f7;font-size:12px;col
   <input id="chordRelease" type="range" min="0.15" max="5" step="0.05" value="0.6">
   <input id="harpRelease" type="range" min="0.15" max="5" step="0.05" value="1.15">
   <input id="pianoRelease" type="range" min="0.15" max="5" step="0.05" value="1.15">
-  <input id="arpeggioTempo" type="range" min="100" max="300" value="120">
-  <input id="rhythmTempo" type="range" min="60" max="240" value="120">
 </div>
 
 <div class="app-wrapper">
 <div class="app" id="appContainer">
   <div class="center-content" id="centerContent">
     <div class="top-toolbar">
-      <button class="controls-btn" id="menuBtn">☰</button>
-      <button class="controls-btn rec-btn" id="recordToggle">
+      <button class="controls-btn rec-btn" id="recordToggle" title="Record MIDI">
         <span class="rec-dot"></span>
       </button>
 
-      <button class="controls-btn" id="advBtn">+</button>
+      <button class="controls-btn" id="advBtn" title="Toggle Piano / Extended Chords">+</button>
 
       <div class="info-compact">
         <div class="current" id="current">C Major</div>
         <div class="notes" id="notes">C · E · G</div>
       </div>
 
-      <div class="toolbar-divider"></div>
-
       <div class="selectors-stack">
         <div class="selectors-desktop">
           <div style="display:flex; gap:4px; width:100%; align-items:center;">
-            <div class="select-wrap-sm" style="width:125px;">
+            <div class="select-wrap-sm" style="flex:1;">
               <label for="modeSelect">mode</label>
               <select id="modeSelect"></select>
             </div>
@@ -428,39 +421,17 @@ select{border:0;outline:none;background:#1c1c1e;color:#f2f2f7;font-size:12px;col
             <option value="rhythm">Rhythm</option>
           </select>
         </div>
-
-        <div class="articulation-sub-row" id="arpeggioSubControls" style="display:none;">
-          <div class="select-wrap-sm" style="width:125px;">
-            <label for="arpeggioStyleSelect">style</label>
-            <select id="arpeggioStyleSelect">
-              <option value="up" selected>Up</option>
-              <option value="down">Down</option>
-              <option value="pendulum">Pendulum</option>
-            </select>
-          </div>
-          <div class="knob-container" data-for="arpeggioTempo" style="flex-shrink:0;">
-            <div class="knob" style="width:18px;height:18px;"><div class="knob-indicator"></div></div>
-            <span class="knob-label">Tempo</span>
-          </div>
-        </div>
-
-        <div class="articulation-sub-row" id="rhythmSubControls" style="display:none;">
-          <div class="select-wrap-sm" style="width:125px;">
-            <label for="rhythmSelect">style</label>
-            <select id="rhythmSelect">
-              <option value="8beat">8-Beat</option>
-              <option value="16beat">16-Beat</option>
-              <option value="waltz">Waltz</option>
-              <option value="bossanova">Bossa Nova</option>
-              <option value="rock">Rock</option>
-              <option value="disco">Disco</option>
-              <option value="swing">Swing</option>
-            </select>
-          </div>
-          <div class="knob-container" data-for="rhythmTempo" style="flex-shrink:0;">
-            <div class="knob" style="width:18px;height:18px;"><div class="knob-indicator"></div></div>
-            <span class="knob-label">Tempo</span>
-          </div>
+        <div class="select-wrap-sm" id="rhythmSelectWrap" style="width:100%; display:none;">
+          <label for="rhythmSelect">style</label>
+          <select id="rhythmSelect">
+            <option value="8beat">8-Beat</option>
+            <option value="16beat">16-Beat</option>
+            <option value="waltz">Waltz</option>
+            <option value="bossanova">Bossa Nova</option>
+            <option value="rock">Rock</option>
+            <option value="disco">Disco</option>
+            <option value="swing">Swing</option>
+          </select>
         </div>
       </div>
 
@@ -477,8 +448,7 @@ select{border:0;outline:none;background:#1c1c1e;color:#f2f2f7;font-size:12px;col
             <div class="knob"><div class="knob-indicator"></div></div>
             <span class="knob-label">Decay</span>
           </div>
-          <div class="select-wrap-sm" style="width:125px;">
-            <label for="chordWave">timbre</label>
+          <div class="select-wrap-sm" style="width:116px;">
             <select id="chordWave">
               <option value="sine">Sine</option>
               <option value="square" selected>Square</option>
@@ -498,8 +468,7 @@ select{border:0;outline:none;background:#1c1c1e;color:#f2f2f7;font-size:12px;col
             <div class="knob"><div class="knob-indicator"></div></div>
             <span class="knob-label">Decay</span>
           </div>
-          <div class="select-wrap-sm" style="width:125px;">
-            <label for="harpWave">timbre</label>
+          <div class="select-wrap-sm" style="width:183px;">
             <select id="harpWave">
               <option value="sine">Sine</option>
               <option value="square" selected>Square</option>
@@ -519,8 +488,7 @@ select{border:0;outline:none;background:#1c1c1e;color:#f2f2f7;font-size:12px;col
             <div class="knob"><div class="knob-indicator"></div></div>
             <span class="knob-label">Decay</span>
           </div>
-          <div class="select-wrap-sm" style="width:125px;">
-            <label for="pianoWave">timbre</label>
+          <div class="select-wrap-sm" style="width:183px;">
             <select id="pianoWave">
               <option value="sine" selected>Sine</option>
               <option value="square">Square</option>
@@ -561,22 +529,9 @@ select{border:0;outline:none;background:#1c1c1e;color:#f2f2f7;font-size:12px;col
 "use strict";
 
 const NOTES=["C","C♯","D","D♯","E","F","F♯","G","G♯","A","A♯","B"];
-
 const HARP_KEYS={
   "Digit1":0,"Digit2":1,"Digit3":2,"Digit4":3,"Digit5":4,"Digit6":5,"Digit7":6,"Digit8":7,"Digit9":8,"Digit0":9,"Minus":10,"Equal":11,
   "Numpad1":0,"Numpad2":1,"Numpad3":2,"Numpad4":3,"Numpad5":4,"Numpad6":5,"Numpad7":6,"Numpad8":7,"Numpad9":8,"Numpad0":9
-};
-
-const CHORD_KEYS = ['KeyQ','KeyW','KeyE','KeyR','KeyT','KeyY','KeyU','KeyI','KeyO','KeyP','BracketLeft','BracketRight'];
-const MOD_KEYS = {
-  'KeyA': 'minor',
-  'KeyS': '7',
-  'KeyD': 'maj7',
-  'KeyF': 'm7',
-  'KeyG': 'diminished',
-  'KeyH': 'augmented',
-  'KeyJ': 'sus4',
-  'KeyK': 'add9'
 };
 
 const CHORD_TYPES=[
@@ -630,32 +585,23 @@ let sustainActive=false;
 let sustainNodes=[];
 let advMode=false;
 
-let activeAudioNodes = new Set();
-
 let rhythmRunning = false;
 let rhythmCurrentStep = 0;
 let rhythmNextNoteTime = 0;
 let rhythmTimerId = null;
 
-let arpeggioRunning = false;
-let arpeggioCurrentStep = 0;
-let arpeggioNextNoteTime = 0;
-let arpeggioTimerId = null;
-
 let chromaticHighlightState = 0;
 let chromaticHighlights = new Set();
 
 let isRecording = false;
-let recordSessionId = 0;
 let recordStartTime = 0;
 let recordedEvents = [];
 let sustainMidiNotes = [];
 
-function recordMidiEvent(status, note, velocity, channel = 0, sessId = -1) {
+function recordMidiEvent(status, note, velocity) {
   if (!isRecording) return;
-  if (sessId !== -1 && sessId !== recordSessionId) return;
   const timeMs = Math.max(0, performance.now() - recordStartTime);
-  recordedEvents.push({ timeMs, status, note, velocity, channel });
+  recordedEvents.push({ timeMs, status, note, velocity });
 }
 
 function writeVarLen(val) {
@@ -669,90 +615,42 @@ function writeVarLen(val) {
 }
 
 function buildMidiBlob(events) {
+  events.sort((a, b) => a.timeMs - b.timeMs);
   const PPQN = 480;
   const BPM = 120;
-  let tracksData = [];
+  let trackBytes = [];
 
-  function createTrack(trackEvents, trackName) {
-    let trackBytes = [];
-    if (trackName) {
-      trackBytes.push(0x00, 0xFF, 0x03, trackName.length);
-      for (let i = 0; i < trackName.length; i++) {
-        trackBytes.push(trackName.charCodeAt(i));
-      }
-    }
+  trackBytes.push(0x00, 0xFF, 0x51, 0x03, 0x07, 0xA1, 0x20);
 
-    trackEvents.sort((a, b) => a.timeMs - b.timeMs);
-    let lastTicks = 0;
-    trackEvents.forEach(e => {
-      let currentTicks = Math.round((e.timeMs * PPQN * (BPM / 60)) / 1000);
-      let deltaTicks = Math.max(0, currentTicks - lastTicks);
-      lastTicks = currentTicks;
+  let lastTicks = 0;
+  events.forEach(e => {
+    let currentTicks = Math.round((e.timeMs * PPQN * (BPM / 60)) / 1000);
+    let deltaTicks = Math.max(0, currentTicks - lastTicks);
+    lastTicks = currentTicks;
 
-      trackBytes.push(...writeVarLen(deltaTicks));
-      const channelStatus = (e.status & 0xF0) | (e.channel & 0x0F);
-      trackBytes.push(channelStatus, e.note, e.velocity);
-    });
+    trackBytes.push(...writeVarLen(deltaTicks));
+    trackBytes.push(e.status, e.note, e.velocity);
+  });
 
-    trackBytes.push(0x00, 0xFF, 0x2F, 0x00);
+  trackBytes.push(0x00, 0xFF, 0x2F, 0x00);
 
-    let trackLen = trackBytes.length;
-    return [
-      0x4D, 0x54, 0x72, 0x6B,
-      (trackLen >> 24) & 0xFF, (trackLen >> 16) & 0xFF,
-      (trackLen >> 8) & 0xFF, trackLen & 0xFF,
-      ...trackBytes
-    ];
-  }
-
-  let track0Bytes = [
-    0x00, 0xFF, 0x51, 0x03, 0x07, 0xA1, 0x20,
-    0x00, 0xFF, 0x2F, 0x00
-  ];
-  let track0Len = track0Bytes.length;
-  tracksData.push(...[
+  let trackLen = trackBytes.length;
+  let headerTrack = [
     0x4D, 0x54, 0x72, 0x6B,
-    (track0Len >> 24) & 0xFF, (track0Len >> 16) & 0xFF,
-    (track0Len >> 8) & 0xFF, track0Len & 0xFF,
-    ...track0Bytes
-  ]);
+    (trackLen >> 24) & 0xFF, (trackLen >> 16) & 0xFF,
+    (trackLen >> 8) & 0xFF, trackLen & 0xFF
+  ];
 
-  const chordsEvents = events.filter(e => e.channel === 0);
-  const harpEvents = events.filter(e => e.channel === 1);
-  const pianoEvents = events.filter(e => e.channel === 2);
-
-  tracksData.push(...createTrack(chordsEvents, "Chords"));
-  tracksData.push(...createTrack(harpEvents, "Harp"));
-  tracksData.push(...createTrack(pianoEvents, "Piano"));
-
-  const numTracks = 4;
   let headerChunk = [
     0x4D, 0x54, 0x68, 0x64,
     0x00, 0x00, 0x00, 0x06,
+    0x00, 0x00,
     0x00, 0x01,
-    (numTracks >> 8) & 0xFF, numTracks & 0xFF,
     (PPQN >> 8) & 0xFF, PPQN & 0xFF
   ];
 
-  const fullBuffer = new Uint8Array([...headerChunk, ...tracksData]);
+  const fullBuffer = new Uint8Array([...headerChunk, ...headerTrack, ...trackBytes]);
   return new Blob([fullBuffer], { type: "audio/midi" });
-}
-
-function stopAllPlayback() {
-  if (!audio) return;
-  const now = audio.ctx.currentTime;
-  activeAudioNodes.forEach(node => {
-    try {
-      node.gain.gain.cancelScheduledValues(now);
-      node.gain.gain.linearRampToValueAtTime(0.0001, now + 0.05);
-      node.osc.stop(now + 0.1);
-    } catch(e) {}
-  });
-  activeAudioNodes.clear();
-  
-  stopSustain();
-  stopRhythm();
-  stopArpeggio();
 }
 
 function getChordWave(){ return document.getElementById("chordWave")?.value || "square"; }
@@ -861,114 +759,6 @@ function updateChordDecayState() {
   }
 }
 
-function formatControlValue(inputId, val) {
-  if (inputId.includes("Volume")) {
-    return `Vol: ${Math.round(val)}%`;
-  } else if (inputId.includes("Release")) {
-    return `Decay: ${Number(val).toFixed(2)}s`;
-  } else if (inputId.includes("Tempo")) {
-    return `Tempo: ${Math.round(val)} BPM`;
-  }
-  return `${val}`;
-}
-
-function titleCase(text) {
-  return text.replace(/\b\w/g, char => char.toUpperCase());
-}
-
-function showChordInfo() {
-  const voicingInfo = computeVoicingForChord(currentRoot, currentType);
-  let nameStr = getFullChordName(currentRoot, currentType);
-  if (voicingInfo.inversion > 0) {
-    const bassNote = NOTES[voicingInfo.midiNotes[0] % 12];
-    nameStr += " / " + bassNote;
-  }
-  document.getElementById("current").textContent = titleCase(nameStr);
-  document.getElementById("notes").textContent = voicingInfo.midiNotes.map(m => NOTES[m % 12]).join(" · ");
-}
-
-function showKnobInfo(inputId, val) {
-  const labels = {
-    chordVolume: "Chord volume",
-    chordRelease: "Chord decay",
-    harpVolume: "Harp volume",
-    harpRelease: "Harp decay",
-    pianoVolume: "Piano volume",
-    pianoRelease: "Piano decay",
-    arpeggioTempo: "Arpeggio tempo",
-    rhythmTempo: "Rhythm tempo"
-  };
-  document.getElementById("current").textContent = titleCase(labels[inputId] || "Control");
-  document.getElementById("notes").textContent = formatControlValue(inputId, val);
-}
-
-function showSelectInfo(select) {
-  const label = select.closest(".select-wrap-sm, .articulation-section")?.querySelector("label");
-  document.getElementById("current").textContent = titleCase(label?.textContent || "Selection");
-  document.getElementById("notes").textContent = select.options[select.selectedIndex]?.text || "";
-}
-
-function showOptionInfo(option) {
-  const select = option.closest("select");
-  if (!select) return;
-  const label = select.closest(".select-wrap-sm, .articulation-section")?.querySelector("label");
-  document.getElementById("current").textContent = titleCase(label?.textContent || "Selection");
-  document.getElementById("notes").textContent = option.textContent;
-}
-
-function showHoveredInfo(element) {
-  if (element.matches(".knob-container")) {
-    const input = document.getElementById(element.dataset.for);
-    if (input) showKnobInfo(element.dataset.for, Number(input.value));
-    return;
-  }
-
-  if (element.matches(".chord")) {
-    const chordInfo = computeVoicingForChord(Number(element.dataset.root), element.dataset.type);
-    document.getElementById("current").textContent = titleCase(getFullChordName(Number(element.dataset.root), element.dataset.type));
-    document.getElementById("notes").textContent = chordInfo.midiNotes.map(m => NOTES[m % 12]).join(" · ");
-    return;
-  }
-
-  if (element.matches("select")) {
-    showSelectInfo(element);
-    return;
-  }
-
-  if (element.matches("button")) {
-    document.getElementById("current").textContent = titleCase(element.textContent.trim() || "Button");
-    document.getElementById("notes").textContent = "";
-  }
-}
-
-function initInfoHover() {
-  document.addEventListener("pointerover", e => {
-    if (e.target.matches("option")) {
-      showOptionInfo(e.target);
-      return;
-    }
-    const element = e.target.closest(".knob-container, .chord, select, button");
-    if (!element || element.matches(".knob-container") && e.relatedTarget?.closest?.(".knob-container") === element) return;
-    showHoveredInfo(element);
-  });
-
-  document.addEventListener("mouseover", e => {
-    if (e.target.matches("option")) showOptionInfo(e.target);
-  });
-
-  document.addEventListener("pointerout", e => {
-    const element = e.target.closest(".knob-container, .chord, select, button");
-    if (!element || element.contains(e.relatedTarget)) return;
-    showChordInfo();
-  });
-
-  document.addEventListener("change", e => {
-    if (e.target.matches("select") && e.target.matches(":hover")) {
-      showSelectInfo(e.target);
-    }
-  });
-}
-
 function initKnobs() {
   document.querySelectorAll('.knob-container').forEach(container => {
     const inputId = container.dataset.for;
@@ -986,10 +776,6 @@ function initKnobs() {
     }
 
     updateKnobVisual();
-    container.addEventListener('pointerenter', () => {
-      showKnobInfo(inputId, Number(input.value));
-    });
-    container.addEventListener('pointerleave', showChordInfo);
 
     let dragging = false;
     let startY = 0;
@@ -998,7 +784,6 @@ function initKnobs() {
     container.addEventListener('pointerdown', e => {
       e.preventDefault();
       dragging = true;
-      container.classList.add('dragging');
       startY = e.clientY;
       startVal = Number(input.value);
       container.setPointerCapture?.(e.pointerId);
@@ -1016,19 +801,12 @@ function initKnobs() {
       
       input.value = newVal;
       updateKnobVisual();
-      showKnobInfo(inputId, newVal);
       input.dispatchEvent(new Event('input'));
-    });
-
-    input.addEventListener('input', () => {
-      updateKnobVisual();
-      if (container.matches(':hover')) showKnobInfo(inputId, Number(input.value));
     });
 
     const endDrag = e => {
       if (dragging) {
         dragging = false;
-        container.classList.remove('dragging');
       }
     };
     container.addEventListener('pointerup', endDrag);
@@ -1176,7 +954,7 @@ if (voicingBtnEl) {
     voicingMode = (voicingMode === "default") ? "voiceleading" : "default";
     renderSelectors();
     applyScaleHighlights();
-    updateInfo(sustainActive || rhythmRunning || arpeggioRunning || (chordPicker!=="sustain" && chordPicker!=="legato"));
+    updateInfo(sustainActive || rhythmRunning || (chordPicker!=="sustain" && chordPicker!=="legato"));
     if (sustainActive) {
       startSustain();
     }
@@ -1257,7 +1035,6 @@ function selectChord(root, type){
 function handleChordPlay(isSame) {
   if (chordPicker === "rhythm") {
     stopSustain();
-    stopArpeggio();
     if (isSame && rhythmRunning) {
       stopRhythm();
       updateInfo(false);
@@ -1267,20 +1044,7 @@ function handleChordPlay(isSame) {
     }
     return;
   }
-  if (chordPicker === "arpeggio") {
-    stopSustain();
-    stopRhythm();
-    if (isSame && arpeggioRunning) {
-      stopArpeggio();
-      updateInfo(false);
-    } else {
-      startArpeggio();
-      updateInfo(true);
-    }
-    return;
-  }
   stopRhythm();
-  stopArpeggio();
   if (chordPicker === "sustain" || chordPicker === "legato") {
     if (isSame && sustainActive) {
       stopSustain();
@@ -1316,7 +1080,7 @@ function playPianoNote(midi, keyEl) {
     resumeAudio();
     const pianoVolFactor = Number(document.getElementById("pianoVolume").value)/100;
     const vol = 0.16 * pianoVolFactor;
-    playTone(midi, vol, null, getPianoWave(), getPianoRelease(), null, 2);
+    playTone(midi, vol, null, getPianoWave(), getPianoRelease());
     if(keyEl){
       keyEl.classList.add("played");
       keyEl.style.transform = "scaleY(0.88)";
@@ -1578,7 +1342,14 @@ function highlightActiveChord(colorMap){
 }
 
 function updateInfo(isActive=true){
-  showChordInfo();
+  const voicingInfo = computeVoicingForChord(currentRoot, currentType);
+  let nameStr = getFullChordName(currentRoot, currentType);
+  if (voicingInfo.inversion > 0) {
+    const bassNote = NOTES[voicingInfo.midiNotes[0] % 12];
+    nameStr += " / " + bassNote;
+  }
+  document.getElementById("current").textContent = nameStr;
+  document.getElementById("notes").textContent = voicingInfo.midiNotes.map(m => NOTES[m % 12]).join(" · ");
   applyScaleHighlights();
   renderHarp();
 }
@@ -1595,7 +1366,7 @@ function initAudio(){
 function resumeAudio(){initAudio();if(audio&&audio.ctx.state==="suspended")audio.ctx.resume();}
 function midiFreq(m){return 440*Math.pow(2,(m-69)/12)}
 
-function playTone(midi, volume=.13, dest, waveType="square", decayTime=.25, scheduledTime=null, channel=0){
+function playTone(midi, volume=.13, dest, waveType="square", decayTime=.25, scheduledTime=null){
   resumeAudio(); if(!audio)return null;
   const o = audio.ctx.createOscillator(), g = audio.ctx.createGain();
   const t = (scheduledTime !== null && scheduledTime >= audio.ctx.currentTime) ? scheduledTime : audio.ctx.currentTime;
@@ -1611,15 +1382,10 @@ function playTone(midi, volume=.13, dest, waveType="square", decayTime=.25, sche
   o.connect(g);g.connect(dest||audio.master);
   o.start(t);o.stop(t+totalDuration+.05);
 
-  const nodeObj = { osc: o, gain: g };
-  activeAudioNodes.add(nodeObj);
-  setTimeout(() => activeAudioNodes.delete(nodeObj), (totalDuration + .1) * 1000);
-
   const delayMs = Math.max(0, Math.round((t - audio.ctx.currentTime) * 1000));
-  const currentSess = recordSessionId;
   setTimeout(() => {
-    recordMidiEvent(0x90, midi, 100, channel, currentSess);
-    setTimeout(() => recordMidiEvent(0x80, midi, 0, channel, currentSess), Math.round(totalDuration * 1000));
+    recordMidiEvent(0x90, midi, 100);
+    setTimeout(() => recordMidiEvent(0x80, midi, 0), Math.round(totalDuration * 1000));
   }, delayMs);
 
   return {osc:o,gain:g};
@@ -1652,15 +1418,9 @@ function rhythmScheduler() {
 }
 
 function nextRhythmStep() {
-  const tempo = Number(document.getElementById("rhythmTempo")?.value || 120);
-  const secondsPerBeat = 60 / tempo;
   const style = document.getElementById("rhythmSelect")?.value || "8beat";
-  let stepDiv = 4;
-  if (style === "waltz") stepDiv = 3;
-  if (style === "8beat" || style === "swing") stepDiv = 2;
-  const secondsPerStep = secondsPerBeat / stepDiv;
-  
   const pattern = RHYTHM_PATTERNS[style] || RHYTHM_PATTERNS["8beat"];
+  const secondsPerStep = pattern.stepTime || 0.15;
   rhythmNextNoteTime += secondsPerStep;
   rhythmCurrentStep = (rhythmCurrentStep + 1) % pattern.steps;
 }
@@ -1681,82 +1441,15 @@ function scheduleRhythmStep(step, time) {
     let bassMidi = bassBase;
     if (event.bass === "5th") bassMidi += 7;
     const bassVol = (event.accent ? 0.22 : 0.16) * chordVolFactor;
-    playTone(bassMidi, bassVol, null, "sawtooth", decay, time, 0);
+    playTone(bassMidi, bassVol, null, "sawtooth", decay, time);
   }
 
   if (event.chord) {
     const chordVol = (event.accent ? 0.16 : 0.11) * chordVolFactor;
     voicedMidi.forEach(midi => {
-      playTone(midi, chordVol, null, chordWave, decay, time, 0);
+      playTone(midi, chordVol, null, chordWave, decay, time);
     });
   }
-}
-
-function startArpeggio() {
-  if (!audio) resumeAudio();
-  if (arpeggioRunning) return;
-  arpeggioRunning = true;
-  arpeggioCurrentStep = 0;
-  arpeggioNextNoteTime = audio.ctx.currentTime;
-  arpeggioScheduler();
-}
-
-function stopArpeggio() {
-  arpeggioRunning = false;
-  if (arpeggioTimerId) {
-    clearTimeout(arpeggioTimerId);
-    arpeggioTimerId = null;
-  }
-}
-
-function arpeggioScheduler() {
-  if (!arpeggioRunning) return;
-  while (arpeggioNextNoteTime < audio.ctx.currentTime + 0.1) {
-    scheduleArpeggioStep(arpeggioNextNoteTime);
-    nextArpeggioStep();
-  }
-  arpeggioTimerId = setTimeout(arpeggioScheduler, 25);
-}
-
-function nextArpeggioStep() {
-  const tempo = Number(document.getElementById("arpeggioTempo")?.value || 120);
-  const secondsPerStep = 60 / (tempo * 2);
-  arpeggioNextNoteTime += secondsPerStep;
-}
-
-function getArpeggioIndices(numNotes, style) {
-  if (numNotes <= 1) return [0];
-  if (style === "up") {
-    let arr = [];
-    for (let i = 0; i < numNotes; i++) arr.push(i);
-    return arr;
-  } else if (style === "down") {
-    let arr = [];
-    for (let i = numNotes - 1; i >= 0; i--) arr.push(i);
-    return arr;
-  } else {
-    let arr = [];
-    for (let i = 0; i < numNotes; i++) arr.push(i);
-    for (let i = numNotes - 2; i > 0; i--) arr.push(i);
-    return arr;
-  }
-}
-
-function scheduleArpeggioStep(time) {
-  const voicedMidi = getChordVoicedMidi(currentRoot, currentType);
-  const style = document.getElementById("arpeggioStyleSelect")?.value || "up";
-  const indices = getArpeggioIndices(voicedMidi.length, style);
-  
-  const idx = indices[arpeggioCurrentStep % indices.length];
-  arpeggioCurrentStep++;
-
-  const midi = voicedMidi[idx];
-  const activeWave = getChordWave();
-  const chordVolFactor = Number(document.getElementById("chordVolume").value)/100;
-  const vol = 0.18 * chordVolFactor;
-  const decay = Math.min(getChordRelease(), 0.5);
-
-  playTone(midi, vol, null, activeWave, decay, time, 0);
 }
 
 function stopSustain(){
@@ -1772,7 +1465,7 @@ function stopSustain(){
   });
 
   if (isRecording && sustainMidiNotes.length > 0) {
-    sustainMidiNotes.forEach(m => recordMidiEvent(0x80, m, 0, 0, recordSessionId));
+    sustainMidiNotes.forEach(m => recordMidiEvent(0x80, m, 0));
     sustainMidiNotes = [];
   }
 
@@ -1787,7 +1480,7 @@ function getSustainVoices() {
 }
 
 function startSustain(){
-  if(chordPicker === "rhythm" || chordPicker === "arpeggio") return;
+  if(chordPicker === "rhythm") return;
   if(!audio) resumeAudio();
   const midiNotes = getSustainVoices();
   const now=audio.ctx.currentTime;
@@ -1797,11 +1490,11 @@ function startSustain(){
   
   if (chordPicker === "legato" && sustainActive && sustainNodes.length === midiNotes.length) {
     if (isRecording && sustainMidiNotes.length > 0) {
-      sustainMidiNotes.forEach(m => recordMidiEvent(0x80, m, 0, 0, recordSessionId));
+      sustainMidiNotes.forEach(m => recordMidiEvent(0x80, m, 0));
     }
     sustainMidiNotes = midiNotes;
     if (isRecording) {
-      sustainMidiNotes.forEach(m => recordMidiEvent(0x90, m, 100, 0, recordSessionId));
+      sustainMidiNotes.forEach(m => recordMidiEvent(0x90, m, 100));
     }
 
     midiNotes.forEach((midi, idx) => {
@@ -1816,7 +1509,7 @@ function startSustain(){
   stopSustain();
   sustainMidiNotes = midiNotes;
   if (isRecording) {
-    sustainMidiNotes.forEach(m => recordMidiEvent(0x90, m, 100, 0, recordSessionId));
+    sustainMidiNotes.forEach(m => recordMidiEvent(0x90, m, 100));
   }
 
   midiNotes.forEach(midi => {
@@ -1833,14 +1526,16 @@ function startSustain(){
 }
 
 function playChordIntervals(midiNotes){
-  if(chordPicker === "rhythm" || chordPicker === "arpeggio") return;
+  if(chordPicker === "rhythm") return;
   const activeWave = getChordWave();
   const chordVolFactor = Number(document.getElementById("chordVolume").value)/100;
   const vol = 0.18 * chordVolFactor;
   const decay = getChordRelease(); 
 
-  if(chordPicker==="staccato"){
-    midiNotes.forEach(midi=>playTone(midi, vol, null, activeWave, decay, null, 0));
+  if(chordPicker==="arpeggio"){
+    midiNotes.forEach((midi,n)=>setTimeout(()=>playTone(midi, vol, null, activeWave, decay), n*85));
+  }else if(chordPicker==="staccato"){
+    midiNotes.forEach(midi=>playTone(midi, vol, null, activeWave, decay));
   }
 }
 
@@ -1860,7 +1555,7 @@ function playHarpNote(laneIndex){
   const vol = 0.14 * harpVolFactor;
   const decay = getHarpRelease();
 
-  playTone(midi, vol, null, activeHarpWave, decay, null, 1);
+  playTone(midi, vol, null, activeHarpWave, decay);
   const lane=document.querySelector(`.harp-lane[data-lane="${laneIndex}"]`);
   if(lane){
     lane.classList.add("played");
@@ -1979,7 +1674,7 @@ document.addEventListener("pointerup",endHarp);document.addEventListener("pointe
 function render(){
   renderSelectors();
   renderChromatic();
-  updateInfo(sustainActive || rhythmRunning || arpeggioRunning || (chordPicker!=="sustain" && chordPicker!=="legato"));
+  updateInfo(sustainActive || rhythmRunning || (chordPicker!=="sustain" && chordPicker!=="legato"));
 }
 
 const recordDropdown = document.getElementById("recordDropdown");
@@ -1990,13 +1685,12 @@ const advBtn = document.getElementById("advBtn");
 
 recordToggle.addEventListener("click", (e) => {
   e.stopPropagation();
-  stopAllPlayback();
+  stopSustain();
 
   if (!isRecording) {
     recordDropdown.classList.add("collapsed");
     
     isRecording = true;
-    recordSessionId++;
     recordStartTime = performance.now();
     recordedEvents = [];
     recordToggle.classList.add("recording");
@@ -2007,7 +1701,7 @@ recordToggle.addEventListener("click", (e) => {
     recordToggle.title = "Record MIDI";
     
     if (sustainMidiNotes.length > 0) {
-      sustainMidiNotes.forEach(m => recordMidiEvent(0x80, m, 0, 0, recordSessionId));
+      sustainMidiNotes.forEach(m => recordMidiEvent(0x80, m, 0));
       sustainMidiNotes = [];
     }
     
@@ -2076,16 +1770,20 @@ document.getElementById("chordWave").addEventListener("change", () => {
 
 document.getElementById("chordPicker").addEventListener("change", e => {
   chordPicker = e.target.value;
-  const rhythmSubControls = document.getElementById("rhythmSubControls");
-  const arpeggioSubControls = document.getElementById("arpeggioSubControls");
-  if (rhythmSubControls) rhythmSubControls.style.display = (chordPicker === "rhythm") ? "flex" : "none";
-  if (arpeggioSubControls) arpeggioSubControls.style.display = (chordPicker === "arpeggio") ? "flex" : "none";
-  
+  const rhythmSelectWrap = document.getElementById("rhythmSelectWrap");
+  if (rhythmSelectWrap) {
+    rhythmSelectWrap.style.display = (chordPicker === "rhythm") ? "flex" : "none";
+  }
   stopSustain();
   stopRhythm();
-  stopArpeggio();
   updateChordDecayState();
   updateInfo(false);
+});
+
+document.getElementById("rhythmSelect").addEventListener("change", () => {
+  if (rhythmRunning) {
+    rhythmCurrentStep = 0;
+  }
 });
 
 window.addEventListener("resize", () => {
@@ -2093,53 +1791,16 @@ window.addEventListener("resize", () => {
   syncHeights();
 });
 
-let pianoModeKeyboard = false;
-const keysHeld = new Set();
-
-document.addEventListener("keydown", e => {
-  if(e.repeat || ["INPUT","SELECT","TEXTAREA"].includes(e.target.tagName)) return;
-  keysHeld.add(e.code);
-  
-  if(e.code === 'KeyL') {
-    pianoModeKeyboard = !pianoModeKeyboard;
-    return;
+document.addEventListener("keydown",e=>{
+  if(e.repeat||["INPUT","SELECT","TEXTAREA"].includes(e.target.tagName))return;
+  if(e.code in HARP_KEYS){e.preventDefault();playHarpNote(HARP_KEYS[e.code]);return;
   }
-  
-  if(e.code in HARP_KEYS) {
-    e.preventDefault();
-    playHarpNote(HARP_KEYS[e.code]);
-    return;
-  }
-  
-  const chordRootIdx = CHORD_KEYS.indexOf(e.code);
-  if(chordRootIdx !== -1) {
-    e.preventDefault();
-    if(pianoModeKeyboard) {
-      const midi = 60 + chordRootIdx;
-      const keyEl = document.querySelector(`.piano-key[data-midi="${midi}"]`);
-      playPianoNote(midi, keyEl);
-    } else {
-      let type = 'major';
-      for (const [code, t] of Object.entries(MOD_KEYS)) {
-        if (keysHeld.has(code)) {
-          type = t;
-          break;
-        }
-      }
-      selectChord(chordRootIdx, type);
-    }
-  }
-});
-
-document.addEventListener("keyup", e => {
-  keysHeld.delete(e.code);
 });
 
 initPiano();
 renderAdvChords();
 render();
 initKnobs();
-initInfoHover();
 
 window.addEventListener("load", ()=>{
   updateScaling();
