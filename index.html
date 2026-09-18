@@ -1585,13 +1585,20 @@ function updateInfo(isActive=true){
 function initAudio(){
   const Ctx=window.AudioContext||window.webkitAudioContext;
   if(!Ctx||audio)return;
-  const ctx=new Ctx();
+  const ctx=new Ctx({ latencyHint: "interactive" });
   const master=ctx.createGain();
   master.gain.value = 1.0;
   master.connect(ctx.destination);
   audio={ctx,master};
 }
-function resumeAudio(){initAudio();if(audio&&audio.ctx.state==="suspended")audio.ctx.resume();}
+function resumeAudio(){
+  if (audio?.ctx.state === "closed") audio = null;
+  initAudio();
+  if (audio?.ctx.state === "suspended") {
+    audio.ctx.resume().catch(err => console.warn("Audio context resume failed:", err));
+  }
+  return audio;
+}
 function midiFreq(m){return 440*Math.pow(2,(m-69)/12)}
 
 function playTone(midi, volume=.13, dest, waveType="square", decayTime=.25, scheduledTime=null, channel=0){
@@ -2139,6 +2146,33 @@ renderAdvChords();
 render();
 initKnobs();
 initInfoHover();
+
+function pauseAudioForPageLifecycle() {
+  if (!audio) return;
+  stopAllPlayback();
+  if (audio.ctx.state === "running") {
+    audio.ctx.suspend().catch(err => console.warn("Audio context suspend failed:", err));
+  }
+}
+
+function resumeAudioForPageLifecycle() {
+  if (audio) resumeAudio();
+}
+
+document.addEventListener("pointerdown", () => {
+  resumeAudio();
+}, { capture: true });
+
+document.addEventListener("visibilitychange", () => {
+  if (document.visibilityState === "hidden") {
+    pauseAudioForPageLifecycle();
+  } else {
+    resumeAudioForPageLifecycle();
+  }
+});
+
+window.addEventListener("pagehide", pauseAudioForPageLifecycle);
+window.addEventListener("pageshow", resumeAudioForPageLifecycle);
 
 window.addEventListener("load", ()=>{
   updateScaling();
