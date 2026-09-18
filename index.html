@@ -366,7 +366,6 @@ select{border:0;outline:none;background:#1c1c1e;color:#f2f2f7;font-size:12px;col
 </style>
 </head>
 <body>
-
 <div style="display:none;">
   <input id="chordVolume" type="range" min="0" max="100" value="20">
   <input id="harpVolume" type="range" min="0" max="100" value="30">
@@ -2147,8 +2146,8 @@ window.addEventListener("load", ()=>{
 });
 if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
-      navigator.serviceWorker.register('sw.js')
-        .then(reg => console.log('Service Worker registered!'))
+      navigator.serviceWorker.register('sw.js', { updateViaCache: 'none' })
+        .then(reg => reg.update())
         .catch(err => console.log('Registration failed: ', err));
     });
 }

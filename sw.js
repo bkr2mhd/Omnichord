@@ -1,4 +1,4 @@
-const CACHE_NAME = 'offline-v2';
+const CACHE_NAME = 'offline-v3';
 const ASSETS = [
   'index.html',
   'manifest.json',
@@ -26,25 +26,26 @@ self.addEventListener('activate', (event) => {
 self.addEventListener('fetch', (event) => {
   if (event.request.method !== 'GET') return;
 
-  if (event.request.mode === 'navigate') {
-    event.respondWith(
-      fetch(event.request)
-        .then((response) => {
-          const responseCopy = response.clone();
-          caches.open(CACHE_NAME).then((cache) => cache.put(event.request, responseCopy));
-          return response;
-        })
-        .catch(() => caches.match(event.request).then((cachedResponse) => {
-          if (cachedResponse) return cachedResponse;
-          throw new Error('The page is unavailable offline.');
-        }))
-    );
-    return;
-  }
-
   event.respondWith(
-    caches.match(event.request).then((cachedResponse) => {
-      return cachedResponse || fetch(event.request);
-    })
+    fetch(event.request, { cache: 'no-cache' })
+      .then((response) => {
+        if (!response.ok) return response;
+        return caches.open(CACHE_NAME).then((cache) => {
+          cache.put(event.request, response.clone());
+          return response;
+        });
+      })
+      .catch(() => caches.match(event.request).then((cachedResponse) => {
+        if (cachedResponse) {
+          return cachedResponse;
+        }
+        if (event.request.mode !== 'navigate') {
+          throw new Error('The requested resource is unavailable offline.');
+        }
+        return caches.match(new URL('index.html', self.location).href).then((cachedPage) => {
+          if (!cachedPage) throw new Error('The page is unavailable offline.');
+          return cachedPage;
+        });
+      }))
   );
 });
