@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -57,66 +57,31 @@ body{
   background:#1c1c1e;border:1px solid #2c2c2e;border-radius:10px;
   min-height:36px;display:flex;align-items:center;width:100%;padding:0 10px;justify-content:center;gap:12px;
 }
+.transport{color:#fff;cursor:pointer;font-size:13px;font-weight:600;}
+.transport:hover{background:#2c2c2e}
+.transport.playing{background:#3a3a3c}
+.select-wrap label,.range-wrap label{font-size:11px;color:#8e8e93}
 select{border:0;outline:none;background:#1c1c1e;color:#f2f2f7;font-size:12px;color-scheme:dark;text-align:right}
+.range-wrap input{width:90px;accent-color:#f2f2f7}
+.range-value{font-size:11px;font-weight:700;min-width:28px;text-align:right}
 
 .beat-row{display:flex;gap:8px;width:100%;align-items:center;}
+.beat-row .select-wrap{flex:1;margin:0;}
 .beat-row .transport{flex:1;margin:0;min-height:36px;}
-.transport{background:#1c1c1e;border:1px solid #2c2c2e;border-radius:10px;color:#fff;cursor:pointer;font-size:13px;font-weight:600;}
-.transport:hover{background:#2c2c2e}
-
-.dialogue-btn{
-  background:#2c2c2e;
-  border:1px solid #3a3a3c;
-  color:#f2f2f7;
-  height:36px;
-  border-radius:10px;
-  cursor:pointer;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-size:13px;
-  font-weight:600;
-  flex:1;
-  transition:background .15s, border-color .15s;
-}
-.dialogue-btn:hover{
-  background:#3a3a3c;
-}
-.dialogue-btn.primary{
-  border-color:#0a84ff;
-  color:#0a84ff;
-}
-.dialogue-btn.primary:hover, .dialogue-btn.primary:active, .dialogue-btn.primary.active{
-  background:#3a3a3c;
-  border-color:#0a84ff;
-  color:#ffffff;
-}
-.dialogue-btn.danger{
-  color:#ff453a;
-}
-.dialogue-btn.danger:hover, .dialogue-btn.danger:active, .dialogue-btn.danger.active{
-  background:#3a3a3c;
-  border-color:#ff453a;
-}
 
 .section-label-header{font-size:10px;font-weight:700;color:#636366;text-transform:uppercase;letter-spacing:.8px;margin-top:4px;padding-left:2px;}
 
 .top-toolbar{
   background:#1c1c1e;border:1px solid #2c2c2e;border-radius:14px;padding:8px 12px;
-  display:flex;align-items:center;gap:8px;width:100%;height:92px;position:relative;overflow:visible;
-}
-
-.toolbar-divider{
-  width:1px;background:#2c2c2e;height:72px;flex-shrink:0;margin:0 4px;
+  display:flex;align-items:center;gap:10px;width:100%;height:80px;position:relative;overflow:visible;
 }
 
 .controls-btn{
   background:#2c2c2e;border:1px solid #3a3a3c;color:#f2f2f7;width:36px;height:36px;
   border-radius:10px;cursor:pointer;display:flex;align-items:center;justify-content:center;
-  flex-shrink:0;transition:background .15s, border-color .15s;font-size:16px;
+  flex-shrink:0;transition:background .15s;
 }
 .controls-btn:hover{background:#3a3a3c}
-.controls-btn.active{background:#3a3a3c;border-color:#0a84ff;}
 
 .rec-btn{position:relative;}
 .rec-dot{
@@ -131,113 +96,70 @@ select{border:0;outline:none;background:#1c1c1e;color:#f2f2f7;font-size:12px;col
   100%{transform:scale(0.8);opacity:0.4;}
 }
 
-.record-dropdown{
-  position:absolute;top:102px;left:0;width:320px;
+.controls-dropdown, .record-dropdown{
+  position:absolute;top:92px;left:0;width:320px;
   background:#1c1c1e;border:1px solid #2c2c2e;border-radius:14px;padding:14px;
   z-index:2000;box-shadow:0 20px 40px rgba(0,0,0,0.9);
   display:flex;flex-direction:column;gap:8px;overflow-y:auto;
   transform-origin:top;transform:scaleY(1);opacity:1;
   transition:transform .2s ease, opacity .2s ease;
 }
-.record-dropdown.collapsed{
+.controls-dropdown.collapsed, .record-dropdown.collapsed{
   transform:scaleY(0);opacity:0;pointer-events:none;
 }
 
 .info-compact{
   display:flex;flex-direction:column;align-items:center;justify-content:center;
-  width:100px;min-width:100px;height:100%;border-right:1px solid #2c2c2e;padding-right:6px;padding-left:6px;
+  width:120px;min-width:120px;height:100%;border-right:1px solid #2c2c2e;padding-right:6px;padding-left:6px;
   flex-shrink:0;text-align:center;
 }
 .current{font-size:12px;font-weight:700;line-height:1.2;text-align:center;word-break:break-word;}
 .notes{font-size:10px;color:#aeaeb2;white-space:nowrap;text-align:center;}
 
 .selectors-stack{
-  display:flex;flex-direction:column;gap:4px;height:76px;justify-content:center;
-  width:180px;min-width:180px;flex-shrink:0;overflow:hidden;
+  display:flex;flex-direction:column;gap:4px;height:64px;justify-content:center;
+  flex:1;min-width:0;overflow:hidden;
 }
 .selectors-desktop{display:flex;flex-direction:column;gap:4px;width:100%;height:100%;justify-content:center;}
 
+.key-tabs-row{
+  display:flex;gap:6px;align-items:center;width:100%;
+}
+
+.key-tabs-inline{
+  display:flex;gap:3px;background:#111113;border:1px solid #2c2c2e;border-radius:8px;
+  padding:2px;overflow-x:auto;height:28px;align-items:center;width:100%;
+  justify-content:center;
+}
+.key-tabs-row .key-tabs-inline{
+  flex:1;min-width:0;
+}
+
+.key-tab-sm{
+  border:0;background:transparent;color:#8e8e93;border-radius:6px;
+  padding:3px 6px;font-size:11px;cursor:pointer;white-space:nowrap;
+}
+.key-tab-sm:hover{background:#2c2c2e;color:#f2f2f7}
+.key-tab-sm.active{background:#3a3a3c;color:#fff;box-shadow:inset 0 0 0 1px #636366}
+
 .chromatic-highlight-ctrl-btn{
-  height:26px;border:1px solid #2c2c2e;background:#1c1c1e;color:#8e8e93;
-  border-radius:6px;font-size:10px;font-weight:600;cursor:pointer;
-  display:flex;align-items:center;justify-content:center;transition:background .15s, border-color .15s;
-  padding:0 4px;white-space:nowrap;flex-shrink:0;
+  height:28px;border:1px solid #2c2c2e;background:#1c1c1e;color:#8e8e93;
+  border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;transition:background .15s;
+  padding:0 10px;white-space:nowrap;flex-shrink:0;
 }
 .chromatic-highlight-ctrl-btn:hover{background:#2c2c2e}
 
+.toolbar-right{display:flex;gap:6px;align-items:center;flex-shrink:0;}
+.toolbar-right-stack{display:flex;flex-direction:column;gap:3px;height:68px;justify-content:center;}
+.timbre-container{display:flex;flex-direction:column;gap:2px;height:68px;justify-content:center;}
+
 .select-wrap-sm{
   background:#111113;border:1px solid #2c2c2e;border-radius:6px;
-  height:26px;display:flex;align-items:center;padding:0 6px;gap:4px;
+  height:21px;display:flex;align-items:center;padding:0 6px;gap:4px;
 }
 .select-wrap-sm label{font-size:9px;color:#8e8e93;text-transform:uppercase;letter-spacing:.4px;white-space:nowrap;}
-.select-wrap-sm select{font-size:10px;background:transparent;width:100%;}
-.select-wrap-sm select:disabled{color:#48484a;cursor:not-allowed;}
-
-.articulation-section {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-  width: 120px;
-  flex-shrink: 0;
-  height: 76px;
-  justify-content: center;
-}
-
-.instrument-rows{
-  display:flex;
-  flex-direction:column;
-  gap:4px;
-  flex-shrink:0;
-}
-.inst-row{
-  display:flex;
-  align-items:center;
-  gap:8px;
-  height:22px;
-}
-.inst-row-label{
-  font-size:10px;
-  font-weight:700;
-  color:#8e8e93;
-  text-transform:uppercase;
-  width:42px;
-  flex-shrink:0;
-}
-
-.knob-container{
-  display:flex;
-  align-items:center;
-  gap:4px;
-  cursor:pointer;
-  user-select:none;
-  transition: opacity 0.2s;
-}
-.knob{
-  width:20px;
-  height:20px;
-  border-radius:50%;
-  background:#2c2c2e;
-  border:1px solid #3a3a3c;
-  position:relative;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-}
-.knob-indicator{
-  width:2px;
-  height:8px;
-  background:#f2f2f7;
-  position:absolute;
-  top:1px;
-  border-radius:1px;
-  transform-origin:bottom center;
-  transform:rotate(0deg);
-}
-.knob-label{
-  font-size:9px;
-  color:#8e8e93;
-  text-transform:uppercase;
-}
+.select-wrap-sm select{font-size:10px;background:transparent;}
 
 .chord-sections{
   display:flex;
@@ -259,11 +181,8 @@ select{border:0;outline:none;background:#1c1c1e;color:#f2f2f7;font-size:12px;col
   position:absolute;top:3px;right:5px;font-size:9px;font-weight:700;
   color:rgba(255,255,255,0.85);pointer-events:none;
 }
-.chord-inversion{
-  position:absolute;bottom:3px;right:5px;font-size:9px;font-weight:700;
-  color:rgba(255,255,255,0.75);pointer-events:none;
-}
 
+/* Piano & Adv Chords Wrapping Area */
 #lowerArea {
   display: flex;
   flex-direction: column;
@@ -365,90 +284,55 @@ select{border:0;outline:none;background:#1c1c1e;color:#f2f2f7;font-size:12px;col
 </head>
 <body>
 
-<div style="display:none;">
-  <input id="chordVolume" type="range" min="0" max="100" value="20">
-  <input id="harpVolume" type="range" min="0" max="100" value="30">
-  <input id="pianoVolume" type="range" min="0" max="100" value="30">
-  <input id="chordRelease" type="range" min="0.15" max="5" step="0.05" value="0.6">
-  <input id="harpRelease" type="range" min="0.15" max="5" step="0.05" value="1.15">
-  <input id="pianoRelease" type="range" min="0.15" max="5" step="0.05" value="1.15">
-</div>
-
 <div class="app-wrapper">
 <div class="app" id="appContainer">
   <div class="center-content" id="centerContent">
     <div class="top-toolbar">
+      <button class="controls-btn" id="sidebarToggle" title="Menu">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="3" y1="12" x2="21" y2="12"></line>
+          <line x1="3" y1="6" x2="21" y2="6"></line>
+          <line x1="3" y1="18" x2="21" y2="18"></line>
+        </svg>
+      </button>
+
       <button class="controls-btn rec-btn" id="recordToggle" title="Record MIDI">
         <span class="rec-dot"></span>
       </button>
 
-      <button class="controls-btn" id="advBtn" title="Toggle Piano / Extended Chords">+</button>
-
       <div class="info-compact">
         <div class="current" id="current">C Major</div>
-        <div class="notes" id="notes">C · E · G</div>
+        <div class="notes" id="notes">C Â· E Â· G</div>
       </div>
 
       <div class="selectors-stack">
         <div class="selectors-desktop">
-          <div style="display:flex; gap:4px; width:100%; align-items:center;">
-            <div class="select-wrap-sm" style="flex:1;">
-              <label for="modeSelect">mode</label>
-              <select id="modeSelect"></select>
-            </div>
-            <div class="select-wrap-sm" id="keySelectWrap" style="flex:1;">
-              <label for="keySelect">key</label>
-              <select id="keySelect"></select>
-            </div>
-          </div>
-          <div style="display:flex; gap:4px; width:100%; align-items:center;">
-            <button type="button" class="chromatic-highlight-ctrl-btn" id="advHighlightBtn" style="flex:1;">+ Highlight</button>
-            <button type="button" class="chromatic-highlight-ctrl-btn" id="voicingBtn" style="flex:1; display:none;">Voicing: Default</button>
+          <div class="key-tabs-inline" id="modeTabs"></div>
+          <div class="key-tabs-row" id="keyTabsRow">
+            <div class="key-tabs-inline" id="keyTabs" style="display:none;"></div>
+            <button type="button" class="chromatic-highlight-ctrl-btn" id="advHighlightBtn" style="flex:1;">+ Highlight Chords</button>
+            <button type="button" class="chromatic-highlight-ctrl-btn" id="advBtn" style="width: 100px; flex-shrink: 0;">More Chords</button>
           </div>
         </div>
       </div>
 
-      <div class="toolbar-divider"></div>
-
-      <div class="articulation-section">
-        <div class="select-wrap-sm" style="width:100%;">
-          <label for="chordPicker">articulation</label>
-          <select id="chordPicker">
-            <option value="staccato">Staccato</option>
-            <option value="sustain" selected>Sustain</option>
-            <option value="legato">Legato</option>
-            <option value="arpeggio">Arpeggio</option>
-            <option value="rhythm">Rhythm</option>
-          </select>
-        </div>
-        <div class="select-wrap-sm" id="rhythmSelectWrap" style="width:100%; display:none;">
-          <label for="rhythmSelect">style</label>
-          <select id="rhythmSelect">
-            <option value="8beat">8-Beat</option>
-            <option value="16beat">16-Beat</option>
-            <option value="waltz">Waltz</option>
-            <option value="bossanova">Bossa Nova</option>
-            <option value="rock">Rock</option>
-            <option value="disco">Disco</option>
-            <option value="swing">Swing</option>
-          </select>
-        </div>
-      </div>
-
-      <div class="toolbar-divider"></div>
-
-      <div class="instrument-rows">
-        <div class="inst-row">
-          <span class="inst-row-label">Chords</span>
-          <div class="knob-container" data-for="chordVolume">
-            <div class="knob"><div class="knob-indicator"></div></div>
-            <span class="knob-label">Vol</span>
+      <div class="toolbar-right">
+        <div class="toolbar-right-stack">
+          <div class="select-wrap-sm">
+            <label for="chordPicker">Artic</label>
+            <select id="chordPicker">
+              <option value="staccato">Staccato</option>
+              <option value="sustain" selected>Sustain</option>
+              <option value="legato">Legato</option>
+              <option value="arpeggio">Arpeggio</option>
+              <option value="mute">Mute</option>
+            </select>
           </div>
-          <div class="knob-container" data-for="chordRelease">
-            <div class="knob"><div class="knob-indicator"></div></div>
-            <span class="knob-label">Decay</span>
-          </div>
-          <div class="select-wrap-sm" style="width:116px;">
+        </div>
+
+        <div class="timbre-container">
+          <div class="select-wrap-sm">
+            <label for="chordWave">Chords Timbre</label>
             <select id="chordWave">
               <option value="sine">Sine</option>
               <option value="square" selected>Square</option>
@@ -456,19 +340,8 @@ select{border:0;outline:none;background:#1c1c1e;color:#f2f2f7;font-size:12px;col
               <option value="triangle">Triangle</option>
             </select>
           </div>
-        </div>
-
-        <div class="inst-row">
-          <span class="inst-row-label">Harp</span>
-          <div class="knob-container" data-for="harpVolume">
-            <div class="knob"><div class="knob-indicator"></div></div>
-            <span class="knob-label">Vol</span>
-          </div>
-          <div class="knob-container" data-for="harpRelease">
-            <div class="knob"><div class="knob-indicator"></div></div>
-            <span class="knob-label">Decay</span>
-          </div>
-          <div class="select-wrap-sm" style="width:183px;">
+          <div class="select-wrap-sm">
+            <label for="harpWave">Harp Timbre</label>
             <select id="harpWave">
               <option value="sine">Sine</option>
               <option value="square" selected>Square</option>
@@ -476,19 +349,8 @@ select{border:0;outline:none;background:#1c1c1e;color:#f2f2f7;font-size:12px;col
               <option value="triangle">Triangle</option>
             </select>
           </div>
-        </div>
-
-        <div class="inst-row">
-          <span class="inst-row-label">Piano</span>
-          <div class="knob-container" data-for="pianoVolume">
-            <div class="knob"><div class="knob-indicator"></div></div>
-            <span class="knob-label">Vol</span>
-          </div>
-          <div class="knob-container" data-for="pianoRelease">
-            <div class="knob"><div class="knob-indicator"></div></div>
-            <span class="knob-label">Decay</span>
-          </div>
-          <div class="select-wrap-sm" style="width:183px;">
+          <div class="select-wrap-sm">
+            <label for="pianoWave">Piano Timbre</label>
             <select id="pianoWave">
               <option value="sine" selected>Sine</option>
               <option value="square">Square</option>
@@ -500,12 +362,73 @@ select{border:0;outline:none;background:#1c1c1e;color:#f2f2f7;font-size:12px;col
       </div>
     </div>
 
+    <div class="controls-dropdown collapsed" id="controlsDropdown">
+      <div class="section-label-header">Beat</div>
+      <div class="beat-row">
+        <div class="select-wrap">
+          <label for="rhythm">Rhythm</label>
+          <select id="rhythm">
+            <option value="rock" selected>Rock (4/4)</option>
+            <option value="waltz">Waltz (3/4)</option>
+            <option value="blues_shuffle">Blues Shuffle (12/8)</option>
+            <option value="kalamatianos">Kalamatianos (7/8)</option>
+            <option value="take_five">Take Five (5/4)</option>
+          </select>
+        </div>
+        <div class="transport" id="play">▶ Start</div>
+      </div>
+      <div class="range-wrap">
+        <label for="tempo">Tempo</label>
+        <input id="tempo" type="range" min="50" max="180" value="100">
+        <span class="range-value" id="tempoValue">100</span>
+      </div>
+
+      <div class="section-label-header">Volumes</div>
+      <div class="range-wrap">
+        <label for="rhythmVolume">Rhythm Vol</label>
+        <input id="rhythmVolume" type="range" min="0" max="100" value="100">
+        <span class="range-value" id="rhythmVolumeValue">100%</span>
+      </div>
+      <div class="range-wrap">
+        <label for="chordVolume">Chord Vol</label>
+        <input id="chordVolume" type="range" min="0" max="100" value="20">
+        <span class="range-value" id="chordVolumeValue">20%</span>
+      </div>
+      <div class="range-wrap">
+        <label for="harpVolume">Harp Vol</label>
+        <input id="harpVolume" type="range" min="0" max="100" value="30">
+        <span class="range-value" id="harpVolumeValue">30%</span>
+      </div>
+      <div class="range-wrap">
+        <label for="pianoVolume">Piano Vol</label>
+        <input id="pianoVolume" type="range" min="0" max="100" value="30">
+        <span class="range-value" id="pianoVolumeValue">30%</span>
+      </div>
+
+      <div class="section-label-header">Decay Time</div>
+      <div class="range-wrap">
+        <label for="chordRelease">Chord</label>
+        <input id="chordRelease" type="range" min="0.15" max="2" step="0.05" value="0.6">
+        <span class="range-value" id="chordReleaseValue">24%</span>
+      </div>
+      <div class="range-wrap">
+        <label for="harpRelease">Harp</label>
+        <input id="harpRelease" type="range" min="0.15" max="2" step="0.05" value="1.15">
+        <span class="range-value" id="harpReleaseValue">54%</span>
+      </div>
+      <div class="range-wrap">
+        <label for="pianoRelease">Piano</label>
+        <input id="pianoRelease" type="range" min="0.15" max="2" step="0.05" value="1.15">
+        <span class="range-value" id="pianoReleaseValue">54%</span>
+      </div>
+    </div>
+
     <div class="record-dropdown collapsed" id="recordDropdown">
       <div class="section-label-header">YOU ATE THAT</div>
       <div style="font-size:12px;color:#8e8e93;line-height:1.4;">You didn't have a pen and paper. You got to the mic, you're like, oh, press record ah ah ah driver roll up the partition please.</div>
       <div class="beat-row" style="margin-top:4px;">
-        <button class="dialogue-btn danger" id="discardMidiBtn">Discard</button>
-        <button class="dialogue-btn primary" id="saveMidiBtn">Save MIDI</button>
+        <button class="transport" id="discardMidiBtn" style="background:#2c2c2e;color:#ff453a;">Discard</button>
+        <button class="transport" id="saveMidiBtn" style="background:#0a84ff;color:#fff;">Save MIDI</button>
       </div>
     </div>
 
@@ -560,14 +483,12 @@ const MODES={
   locrian:{label:"Locrian",intervals:[0,1,3,5,6,8,10],qualities:["diminished","major","minor","minor","major","major","minor"]}
 };
 
-const RHYTHM_PATTERNS = {
-  "8beat": { stepTime: 0.22, steps: 8, events: [{ bass: "root", chord: true, accent: true }, null, { chord: true }, null, { bass: "5th", chord: true }, null, { chord: true }, null] },
-  "16beat": { stepTime: 0.125, steps: 16, events: [{ bass: "root", chord: true, accent: true }, null, { chord: true }, { chord: true }, { bass: "5th" }, null, { chord: true }, null, { bass: "root", chord: true, accent: true }, null, { chord: true }, { chord: true }, { bass: "5th" }, null, { chord: true }, null] },
-  "waltz": { stepTime: 0.22, steps: 6, events: [{ bass: "root", accent: true }, null, { chord: true }, null, { chord: true }, null] },
-  "bossanova": { stepTime: 0.13, steps: 16, events: [{ bass: "root", chord: true, accent: true }, null, null, { chord: true }, null, null, { bass: "5th", chord: true }, null, { bass: "root" }, null, { chord: true }, null, { bass: "5th", chord: true }, null, { chord: true }, null] },
-  "rock": { stepTime: 0.125, steps: 16, events: [{ bass: "root", chord: true, accent: true }, null, { bass: "root" }, null, { chord: true, accent: true }, null, { bass: "5th" }, null, { bass: "root", chord: true, accent: true }, null, { bass: "root" }, null, { chord: true, accent: true }, null, { chord: true }, null] },
-  "disco": { stepTime: 0.125, steps: 16, events: [{ bass: "root", accent: true }, null, { chord: true }, null, { bass: "root", accent: true }, null, { chord: true }, null, { bass: "root", accent: true }, null, { chord: true }, null, { bass: "root", accent: true }, null, { chord: true }, { chord: true }] },
-  "swing": { stepTime: 0.18, steps: 8, events: [{ bass: "root", chord: true, accent: true }, null, { chord: true }, { chord: true }, { bass: "5th", chord: true }, null, { chord: true }, { chord: true }] }
+const PATTERNS={
+  rock:{sub:4,len:16,k:[0,8],s:[4,12],h:[0,2,4,6,8,10,12,14]},
+  waltz:{sub:4,len:12,k:[0],s:[4,8],h:[]},
+  blues_shuffle:{sub:3,len:12,k:[0,6],s:[3,9],h:[0,1,2,3,4,5,6,7,8,9,10,11]},
+  kalamatianos:{sub:2,len:7,k:[0,3,5],s:[2],h:[1,4,6]},
+  take_five:{sub:4,len:20,k:[0,12],s:[8],h:[4,16]}
 };
 
 let selectedKey=null;
@@ -575,19 +496,16 @@ let selectedMode="chromatic";
 let currentRoot=0;
 let currentType="major";
 let chordPicker="sustain";
-let voicingMode="default";
 let audio=null;
+let rhythmTimer=null;
+let rhythmStep=0;
+let playing=false;
 let harpDragging=false;
 let activePointerId=null;
 let lastLane=-1;
 let sustainActive=false;
 let sustainNodes=[];
 let advMode=false;
-
-let rhythmRunning = false;
-let rhythmCurrentStep = 0;
-let rhythmNextNoteTime = 0;
-let rhythmTimerId = null;
 
 let chromaticHighlightState = 0;
 let chromaticHighlights = new Set();
@@ -655,6 +573,7 @@ function buildMidiBlob(events) {
 function getChordWave(){ return document.getElementById("chordWave")?.value || "square"; }
 function getHarpWave(){ return document.getElementById("harpWave")?.value || "square"; }
 function getPianoWave(){ return document.getElementById("pianoWave")?.value || "sine"; }
+
 function getChordRelease(){ return Number(document.getElementById("chordRelease").value); }
 function getHarpRelease(){ return Number(document.getElementById("harpRelease").value); }
 function getPianoRelease(){ return Number(document.getElementById("pianoRelease").value); }
@@ -682,282 +601,72 @@ function getFullChordName(root, type){
   return label(root, type);
 }
 
-function computeVoicingForChord(root, type) {
-  const intervals = chordDef(type).intervals;
-  const N = intervals.length;
-
-  if (voicingMode !== "voiceleading" || selectedMode === "chromatic" || selectedKey === null) {
-    const midiNotes = intervals.map(i => 60 + root + i);
-    return { midiNotes, inversion: 0 };
-  }
-
-  if (root === selectedKey) {
-    const midiNotes = intervals.map(i => 60 + root + i);
-    return { midiNotes, inversion: 0 };
-  }
-
-  const rootQuality = MODES[selectedMode]?.qualities[0] || "major";
-  const rootIntervals = chordDef(rootQuality).intervals;
-  const anchorMidiCenter = 60 + selectedKey + (rootIntervals.reduce((a, b) => a + b, 0) / rootIntervals.length);
-
-  const pitchClasses = intervals.map(i => (root + i) % 12);
-
-  let bestInversion = 0;
-  let bestMidiNotes = [];
-  let minDiff = Infinity;
-
-  for (let k = 0; k < N; k++) {
-    const bassPc = pitchClasses[k];
-    let naiveBass = 60 + bassPc;
-    if (naiveBass >= 72) naiveBass -= 12;
-
-    let currentNotes = [naiveBass];
-    for (let j = 1; j < N; j++) {
-      const currPc = pitchClasses[(k + j) % N];
-      const prevPc = pitchClasses[(k + j - 1) % N];
-      let step = (currPc - prevPc + 12) % 12;
-      if (step === 0) step = 12;
-      currentNotes.push(currentNotes[j - 1] + step);
-    }
-
-    let avg = currentNotes.reduce((a, b) => a + b, 0) / N;
-    let octaveShift = Math.round((anchorMidiCenter - avg) / 12);
-    currentNotes = currentNotes.map(n => n + octaveShift * 12);
-    
-    avg = currentNotes.reduce((a, b) => a + b, 0) / N;
-    const diff = Math.abs(avg - anchorMidiCenter);
-
-    if (diff < minDiff) {
-      minDiff = diff;
-      bestInversion = k;
-      bestMidiNotes = currentNotes;
-    }
-  }
-
-  return { midiNotes: bestMidiNotes, inversion: bestInversion };
-}
-
-function getChordVoicedMidi(root, type) {
-  return computeVoicingForChord(root, type).midiNotes;
-}
-
 function notesFor(root, type){
-  const midiNotes = getChordVoicedMidi(root, type);
-  return midiNotes.map(m => NOTES[m % 12]);
+  return chordDef(type).intervals.map(i => NOTES[(root + i) % 12]);
 }
 
-function updateChordDecayState() {
-  const decayContainer = document.querySelector('.knob-container[data-for="chordRelease"]');
-  if (!decayContainer) return;
-  if (chordPicker === "sustain" || chordPicker === "legato") {
-    decayContainer.style.opacity = "0.3";
-    decayContainer.style.pointerEvents = "none";
-  } else {
-    decayContainer.style.opacity = "1";
-    decayContainer.style.pointerEvents = "auto";
-  }
-}
-
-function initKnobs() {
-  document.querySelectorAll('.knob-container').forEach(container => {
-    const inputId = container.dataset.for;
-    const input = document.getElementById(inputId);
-    const indicator = container.querySelector('.knob-indicator');
-    if (!input || !indicator) return;
-
-    function updateKnobVisual() {
-      const min = Number(input.min);
-      const max = Number(input.max);
-      const val = Number(input.value);
-      const pct = (val - min) / (max - min);
-      const deg = -135 + pct * 270;
-      indicator.style.transform = `rotate(${deg}deg)`;
-    }
-
-    updateKnobVisual();
-
-    let dragging = false;
-    let startY = 0;
-    let startVal = 0;
-
-    container.addEventListener('pointerdown', e => {
+function renderTabs(){
+  const modeTabs=document.getElementById("modeTabs");
+  modeTabs.innerHTML="";
+  Object.entries(MODES).forEach(([id,mode])=>{
+    const b=document.createElement("button");
+    b.type="button";
+    b.className="key-tab-sm"+(selectedMode===id?" active":"");
+    b.textContent=mode.label;
+    b.addEventListener("pointerdown",(e)=>{
       e.preventDefault();
-      dragging = true;
-      startY = e.clientY;
-      startVal = Number(input.value);
-      container.setPointerCapture?.(e.pointerId);
-    });
-
-    container.addEventListener('pointermove', e => {
-      if (!dragging) return;
-      const dy = startY - e.clientY;
-      const min = Number(input.min);
-      const max = Number(input.max);
-      const range = max - min;
-      
-      let newVal = startVal + (dy / 100) * range;
-      newVal = Math.max(min, Math.min(max, newVal));
-      
-      input.value = newVal;
-      updateKnobVisual();
-      input.dispatchEvent(new Event('input'));
-    });
-
-    const endDrag = e => {
-      if (dragging) {
-        dragging = false;
+      const prevMode=selectedMode;
+      selectedMode=id;
+      if(prevMode==="chromatic" && id!=="chromatic"){
+        selectedKey=currentRoot;
       }
-    };
-    container.addEventListener('pointerup', endDrag);
-    container.addEventListener('pointercancel', endDrag);
+      if(id==="chromatic"){
+        selectedKey=null;
+      }
+      render();
+    });
+    modeTabs.appendChild(b);
   });
-  updateChordDecayState();
-}
 
-document.getElementById("chordVolume").addEventListener("input", () => {
-  if (sustainActive && audio) {
-    const chordVolFactor = Number(document.getElementById("chordVolume").value)/100;
-    const peakVol = 0.16 * chordVolFactor;
-    const now = audio.ctx.currentTime;
-    sustainNodes.forEach(n => {
-      n.gain.gain.cancelScheduledValues(now);
-      n.gain.gain.setValueAtTime(n.gain.gain.value, now);
-      n.gain.gain.linearRampToValueAtTime(Math.max(0.0001, peakVol), now + 0.05);
-    });
-  }
-});
-
-function renderSelectors(){
-  const modeSelect = document.getElementById("modeSelect");
-  if(modeSelect.children.length === 0){
-    Object.entries(MODES).forEach(([id, mode])=>{
-      const opt = document.createElement("option");
-      opt.value = id;
-      opt.textContent = mode.label;
-      modeSelect.appendChild(opt);
-    });
-  }
-  modeSelect.value = selectedMode;
-
-  const keySelectWrap = document.getElementById("keySelectWrap");
-  const keySelect = document.getElementById("keySelect");
+  const keyTabs = document.getElementById("keyTabs");
   const advHighlightBtn = document.getElementById("advHighlightBtn");
-  const voicingBtn = document.getElementById("voicingBtn");
-
-  keySelectWrap.style.display = "flex";
-
-  keySelect.disabled = false;
-  keySelect.innerHTML = "";
-
-  const placeholder = document.createElement("option");
-  placeholder.value = "";
-  placeholder.disabled = true;
-  placeholder.hidden = true;
-  placeholder.textContent = "-";
-  if (selectedKey === null) placeholder.selected = true;
-  keySelect.appendChild(placeholder);
-
-  NOTES.forEach((n, i)=>{
-    const opt = document.createElement("option");
-    opt.value = i;
-    opt.textContent = n;
-    keySelect.appendChild(opt);
-  });
-
-  if(selectedKey !== null){
-    keySelect.value = selectedKey;
-  } else {
-    keySelect.value = "";
-  }
+  keyTabs.innerHTML="";
 
   if(selectedMode === "chromatic"){
+    keyTabs.style.display = "none";
     advHighlightBtn.style.display = "flex";
-    if (voicingBtn) voicingBtn.style.display = "none";
   } else {
+    keyTabs.style.display = "flex";
     advHighlightBtn.style.display = "none";
-    if (voicingBtn) voicingBtn.style.display = "flex";
+    NOTES.forEach((n,i)=>{
+      const b=document.createElement("button");
+      b.type="button";
+      b.className="key-tab-sm"+(selectedKey===i?" active":"");
+      b.textContent=n;
+      b.addEventListener("pointerdown",(e)=>{
+        e.preventDefault();
+        selectedKey=i;
+        render();
+      });
+      keyTabs.appendChild(b);
+    });
   }
 
   if(selectedMode === "chromatic"){
     if(chromaticHighlightState === 0){
-      advHighlightBtn.textContent = "+ Highlight";
+      advHighlightBtn.textContent = "+ Highlight Chords";
       advHighlightBtn.style.background = "#1c1c1e";
       advHighlightBtn.style.color = "#8e8e93";
     } else if(chromaticHighlightState === 1){
-      advHighlightBtn.textContent = "✓ Lock";
+      advHighlightBtn.textContent = "âœ“ Lock Highlights";
       advHighlightBtn.style.background = "#3a3a3c";
       advHighlightBtn.style.color = "#fff";
     } else {
-      advHighlightBtn.textContent = "✕ Clear";
+      advHighlightBtn.textContent = "âœ• Clear Highlights";
       advHighlightBtn.style.background = "#2c2c2e";
       advHighlightBtn.style.color = "#f2f2f7";
     }
   }
-
-  if (voicingBtn) {
-    if (voicingMode === "voiceleading") {
-      voicingBtn.textContent = "Voicing: Lead";
-      voicingBtn.style.background = "#3a3a3c";
-      voicingBtn.style.color = "#fff";
-      voicingBtn.style.borderColor = "#0a84ff";
-    } else {
-      voicingBtn.textContent = "Voicing: Default";
-      voicingBtn.style.background = "#1c1c1e";
-      voicingBtn.style.color = "#8e8e93";
-      voicingBtn.style.borderColor = "#2c2c2e";
-    }
-  }
-}
-
-document.getElementById("modeSelect").addEventListener("change", (e)=>{
-  const id = e.target.value;
-  const prevMode = selectedMode;
-  selectedMode = id;
-  if(prevMode === "chromatic" && id !== "chromatic"){
-    selectedKey = currentRoot !== null ? currentRoot : 0;
-  }
-  if(id === "chromatic"){
-    selectedKey = null;
-  }
-  render();
-  if (sustainActive) {
-    startSustain();
-  }
-});
-
-document.getElementById("keySelect").addEventListener("change", (e)=>{
-  if (e.target.value !== "") {
-    selectedKey = Number(e.target.value);
-
-    if (selectedMode === "chromatic") {
-      if (currentType === "minor" || currentType === "m7") {
-        selectedMode = "minor";
-      } else if (currentType === "diminished") {
-        selectedMode = "locrian";
-      } else {
-        selectedMode = "major";
-      }
-    }
-
-    render();
-    if (sustainActive) {
-      startSustain();
-    }
-  }
-});
-
-const voicingBtnEl = document.getElementById("voicingBtn");
-if (voicingBtnEl) {
-  voicingBtnEl.addEventListener("pointerdown", (e) => {
-    e.preventDefault();
-    voicingMode = (voicingMode === "default") ? "voiceleading" : "default";
-    renderSelectors();
-    applyScaleHighlights();
-    updateInfo(sustainActive || rhythmRunning || (chordPicker!=="sustain" && chordPicker!=="legato"));
-    if (sustainActive) {
-      startSustain();
-    }
-  });
 }
 
 function makeChordButton(root, type){
@@ -1032,18 +741,11 @@ function selectChord(root, type){
 }
 
 function handleChordPlay(isSame) {
-  if (chordPicker === "rhythm") {
+  if (chordPicker === "mute") {
     stopSustain();
-    if (isSame && rhythmRunning) {
-      stopRhythm();
-      updateInfo(false);
-    } else {
-      startRhythm();
-      updateInfo(true);
-    }
+    updateInfo(true);
     return;
   }
-  stopRhythm();
   if (chordPicker === "sustain" || chordPicker === "legato") {
     if (isSame && sustainActive) {
       stopSustain();
@@ -1055,7 +757,7 @@ function handleChordPlay(isSame) {
   } else {
     stopSustain();
     updateInfo(true);
-    playChordIntervals(getChordVoicedMidi(currentRoot, currentType));
+    playChordIntervals(getPreviewIntervals());
   }
 }
 
@@ -1209,45 +911,28 @@ function updatePianoHighlights(){
 }
 
 function applyScaleHighlights(){
-  document.querySelectorAll(".chord-roman, .chord-inversion").forEach(el => el.remove());
+  const existingRomans = document.querySelectorAll(".chord-roman");
+  existingRomans.forEach(el => el.remove());
 
   let colorMap = null;
 
-  if(selectedMode !== "chromatic" && selectedKey !== null) {
+  if(selectedMode !== "chromatic") {
     const modeDef = MODES[selectedMode];
     const degreeColors = ["#D33682","#CB4B16","#B58900","#859900","#2AA198","#268BD2","#6C71C4"];
     const romanNumeralsBase = ["I", "II", "III", "IV", "V", "VI", "VII"];
     colorMap = new Map();
     const romanMap = new Map();
 
-    const scalePitchClasses = new Set(modeDef.intervals.map(i => (selectedKey + i) % 12));
-    const rootToDegreeIdx = new Map();
-
     modeDef.intervals.forEach((interval, idx) => {
       const scaleRoot = (selectedKey + interval) % 12;
-      rootToDegreeIdx.set(scaleRoot, idx);
+      const quality = modeDef.qualities[idx];
+      colorMap.set(`${scaleRoot}-${quality}`, degreeColors[idx]);
 
-      const diatonicQuality = modeDef.qualities[idx];
       let roman = romanNumeralsBase[idx];
-      if(diatonicQuality === "minor") roman = roman.toLowerCase();
-      if(diatonicQuality === "diminished") roman = roman.toLowerCase() + "°";
-      romanMap.set(`${scaleRoot}-${diatonicQuality}`, roman);
+      if(quality === "minor") roman = roman.toLowerCase();
+      if(quality === "diminished") roman = roman.toLowerCase() + "°";
+      romanMap.set(`${scaleRoot}-${quality}`, roman);
     });
-
-    const allTypes = [...CHORD_TYPES, ...ADV_CHORD_TYPES];
-    for(let r = 0; r < 12; r++) {
-      if (!rootToDegreeIdx.has(r)) continue;
-
-      const degreeIdx = rootToDegreeIdx.get(r);
-      const color = degreeColors[degreeIdx];
-
-      allTypes.forEach(t => {
-        const isDiatonic = t.intervals.every(i => scalePitchClasses.has((r + i) % 12));
-        if (isDiatonic) {
-          colorMap.set(`${r}-${t.id}`, color);
-        }
-      });
-    }
 
     document.querySelectorAll(".chord").forEach(b=>{
       const br = Number(b.dataset.root);
@@ -1262,20 +947,6 @@ function applyScaleHighlights(){
       }
     });
   }
-
-  document.querySelectorAll(".chord").forEach(b => {
-    const br = Number(b.dataset.root);
-    const bt = b.dataset.type;
-    const vInfo = computeVoicingForChord(br, bt);
-    
-    if (vInfo.inversion > 0) {
-      const invSpan = document.createElement("span");
-      invSpan.className = "chord-inversion";
-      const invText = vInfo.inversion === 1 ? "1st" : (vInfo.inversion === 2 ? "2nd" : "3rd");
-      invSpan.textContent = invText;
-      b.appendChild(invSpan);
-    }
-  });
 
   highlightActiveChord(colorMap);
   updatePianoHighlights();
@@ -1307,14 +978,8 @@ function highlightActiveChord(colorMap){
 }
 
 function updateInfo(isActive=true){
-  const voicingInfo = computeVoicingForChord(currentRoot, currentType);
-  let nameStr = getFullChordName(currentRoot, currentType);
-  if (voicingInfo.inversion > 0) {
-    const bassNote = NOTES[voicingInfo.midiNotes[0] % 12];
-    nameStr += " / " + bassNote;
-  }
-  document.getElementById("current").textContent = nameStr;
-  document.getElementById("notes").textContent = voicingInfo.midiNotes.map(m => NOTES[m % 12]).join(" · ");
+  document.getElementById("current").textContent=getFullChordName(currentRoot, currentType);
+  document.getElementById("notes").textContent=notesFor(currentRoot, currentType).join(" Â· ");
   applyScaleHighlights();
   renderHarp();
 }
@@ -1324,17 +989,20 @@ function initAudio(){
   if(!Ctx||audio)return;
   const ctx=new Ctx();
   const master=ctx.createGain();
+  const rhythm=ctx.createGain();
   master.gain.value = 1.0;
+  const rhythmVolFactor = Number(document.getElementById("rhythmVolume").value)/100;
+  rhythm.gain.value = rhythmVolFactor * 2.5;
+  rhythm.connect(master);
   master.connect(ctx.destination);
-  audio={ctx,master};
+  audio={ctx,master,rhythm};
 }
 function resumeAudio(){initAudio();if(audio&&audio.ctx.state==="suspended")audio.ctx.resume();}
 function midiFreq(m){return 440*Math.pow(2,(m-69)/12)}
 
-function playTone(midi, volume=.13, dest, waveType="square", decayTime=.25, scheduledTime=null){
+function playTone(midi, volume=.13, dest, waveType="square", decayTime=.25){
   resumeAudio(); if(!audio)return null;
-  const o = audio.ctx.createOscillator(), g = audio.ctx.createGain();
-  const t = (scheduledTime !== null && scheduledTime >= audio.ctx.currentTime) ? scheduledTime : audio.ctx.currentTime;
+  const o = audio.ctx.createOscillator(), g = audio.ctx.createGain(), t = audio.ctx.currentTime;
   o.type = ["sine","square","sawtooth","triangle"].includes(waveType) ? waveType : "square";
   o.frequency.value = midiFreq(midi);
   
@@ -1347,74 +1015,10 @@ function playTone(midi, volume=.13, dest, waveType="square", decayTime=.25, sche
   o.connect(g);g.connect(dest||audio.master);
   o.start(t);o.stop(t+totalDuration+.05);
 
-  const delayMs = Math.max(0, Math.round((t - audio.ctx.currentTime) * 1000));
-  setTimeout(() => {
-    recordMidiEvent(0x90, midi, 100);
-    setTimeout(() => recordMidiEvent(0x80, midi, 0), Math.round(totalDuration * 1000));
-  }, delayMs);
+  recordMidiEvent(0x90, midi, 100);
+  setTimeout(() => recordMidiEvent(0x80, midi, 0), Math.round(totalDuration * 1000));
 
   return {osc:o,gain:g};
-}
-
-function startRhythm() {
-  if (!audio) resumeAudio();
-  if (rhythmRunning) return;
-  rhythmRunning = true;
-  rhythmCurrentStep = 0;
-  rhythmNextNoteTime = audio.ctx.currentTime;
-  rhythmScheduler();
-}
-
-function stopRhythm() {
-  rhythmRunning = false;
-  if (rhythmTimerId) {
-    clearTimeout(rhythmTimerId);
-    rhythmTimerId = null;
-  }
-}
-
-function rhythmScheduler() {
-  if (!rhythmRunning) return;
-  while (rhythmNextNoteTime < audio.ctx.currentTime + 0.1) {
-    scheduleRhythmStep(rhythmCurrentStep, rhythmNextNoteTime);
-    nextRhythmStep();
-  }
-  rhythmTimerId = setTimeout(rhythmScheduler, 25);
-}
-
-function nextRhythmStep() {
-  const style = document.getElementById("rhythmSelect")?.value || "8beat";
-  const pattern = RHYTHM_PATTERNS[style] || RHYTHM_PATTERNS["8beat"];
-  const secondsPerStep = pattern.stepTime || 0.15;
-  rhythmNextNoteTime += secondsPerStep;
-  rhythmCurrentStep = (rhythmCurrentStep + 1) % pattern.steps;
-}
-
-function scheduleRhythmStep(step, time) {
-  const style = document.getElementById("rhythmSelect")?.value || "8beat";
-  const pattern = RHYTHM_PATTERNS[style] || RHYTHM_PATTERNS["8beat"];
-  const event = pattern.events[step];
-  if (!event) return;
-
-  const voicedMidi = getChordVoicedMidi(currentRoot, currentType);
-  const bassBase = 36 + currentRoot;
-  const chordWave = getChordWave();
-  const chordVolFactor = Number(document.getElementById("chordVolume").value)/100;
-  const decay = Math.min(getChordRelease(), 0.4);
-
-  if (event.bass) {
-    let bassMidi = bassBase;
-    if (event.bass === "5th") bassMidi += 7;
-    const bassVol = (event.accent ? 0.22 : 0.16) * chordVolFactor;
-    playTone(bassMidi, bassVol, null, "sawtooth", decay, time);
-  }
-
-  if (event.chord) {
-    const chordVol = (event.accent ? 0.16 : 0.11) * chordVolFactor;
-    voicedMidi.forEach(midi => {
-      playTone(midi, chordVol, null, chordWave, decay, time);
-    });
-  }
 }
 
 function stopSustain(){
@@ -1439,31 +1043,32 @@ function stopSustain(){
 }
 
 function getSustainVoices() {
-  const midiNotes = getChordVoicedMidi(currentRoot, currentType);
-  if (midiNotes.length === 3) return [...midiNotes, midiNotes[0] + 12];
-  return midiNotes;
+  const ints = chordDef(currentType).intervals;
+  if(ints.length === 3) return [...ints, 12]; 
+  return ints;
 }
 
 function startSustain(){
-  if(chordPicker === "rhythm") return;
+  if(chordPicker === "mute") return;
   if(!audio) resumeAudio();
-  const midiNotes = getSustainVoices();
+  const intervals=getSustainVoices();
+  const base=60+currentRoot;
   const now=audio.ctx.currentTime;
   const activeWave = getChordWave();
   const chordVolFactor = Number(document.getElementById("chordVolume").value)/100;
   const peakVol = 0.16 * chordVolFactor;
   
-  if (chordPicker === "legato" && sustainActive && sustainNodes.length === midiNotes.length) {
+  if (chordPicker === "legato" && sustainActive && sustainNodes.length === intervals.length) {
     if (isRecording && sustainMidiNotes.length > 0) {
       sustainMidiNotes.forEach(m => recordMidiEvent(0x80, m, 0));
     }
-    sustainMidiNotes = midiNotes;
+    sustainMidiNotes = intervals.map(i => base + i);
     if (isRecording) {
       sustainMidiNotes.forEach(m => recordMidiEvent(0x90, m, 100));
     }
 
-    midiNotes.forEach((midi, idx) => {
-      const freq = midiFreq(midi);
+    intervals.forEach((i, idx) => {
+      const freq = midiFreq(base + i);
       sustainNodes[idx].osc.type = activeWave;
       sustainNodes[idx].osc.frequency.cancelScheduledValues(now);
       sustainNodes[idx].osc.frequency.setTargetAtTime(freq, now, 0.05);
@@ -1472,15 +1077,15 @@ function startSustain(){
   }
   
   stopSustain();
-  sustainMidiNotes = midiNotes;
+  sustainMidiNotes = intervals.map(i => base + i);
   if (isRecording) {
     sustainMidiNotes.forEach(m => recordMidiEvent(0x90, m, 100));
   }
 
-  midiNotes.forEach(midi => {
+  intervals.forEach(i=>{
     const o=audio.ctx.createOscillator(),g=audio.ctx.createGain();
     o.type = activeWave;
-    o.frequency.value=midiFreq(midi);
+    o.frequency.value=midiFreq(base+i);
     g.gain.setValueAtTime(.0001,now);
     g.gain.exponentialRampToValueAtTime(peakVol,now+.05);
     o.connect(g);g.connect(audio.master);
@@ -1490,17 +1095,21 @@ function startSustain(){
   sustainActive=true;
 }
 
-function playChordIntervals(midiNotes){
-  if(chordPicker === "rhythm") return;
+function getPreviewIntervals(){
+  return chordDef(currentType).intervals;
+}
+function playChordIntervals(intervals){
+  if(chordPicker === "mute") return;
+  const base=60+currentRoot;
   const activeWave = getChordWave();
   const chordVolFactor = Number(document.getElementById("chordVolume").value)/100;
   const vol = 0.18 * chordVolFactor;
   const decay = getChordRelease(); 
 
   if(chordPicker==="arpeggio"){
-    midiNotes.forEach((midi,n)=>setTimeout(()=>playTone(midi, vol, null, activeWave, decay), n*85));
+    intervals.forEach((i,n)=>setTimeout(()=>playTone(base+i, vol, null, activeWave, decay), n*85));
   }else if(chordPicker==="staccato"){
-    midiNotes.forEach(midi=>playTone(midi, vol, null, activeWave, decay));
+    intervals.forEach(i=>playTone(base+i, vol, null, activeWave, decay));
   }
 }
 
@@ -1548,11 +1157,13 @@ function syncHeights(){
   const centerEl = document.getElementById("centerContent");
   const harpSeg = document.getElementById("verticalHarpSegment");
   const chordArea = document.getElementById("chordArea");
+  const controlsDropdown = document.getElementById("controlsDropdown");
   const recordDropdown = document.getElementById("recordDropdown");
   if(centerEl && harpSeg){
     harpSeg.style.height = centerEl.offsetHeight + "px";
   }
   if(chordArea){
+    if(controlsDropdown) controlsDropdown.style.height = chordArea.offsetHeight + "px";
     if(recordDropdown) recordDropdown.style.height = chordArea.offsetHeight + "px";
   }
 }
@@ -1599,23 +1210,75 @@ harpGridEl.addEventListener("pointermove",e=>{if(harpDragging && e.pointerId===a
 function endHarp(){harpDragging=false;activePointerId=null;lastLane=-1;}
 document.addEventListener("pointerup",endHarp);document.addEventListener("pointercancel",endHarp);
 
-function render(){
-  renderSelectors();
-  renderChromatic();
-  updateInfo(sustainActive || rhythmRunning || (chordPicker!=="sustain" && chordPicker!=="legato"));
+function kick(){
+  if(!audio)return;
+  const o=audio.ctx.createOscillator(),g=audio.ctx.createGain(),t=audio.ctx.currentTime;
+  o.type="sine";o.frequency.setValueAtTime(120,t);o.frequency.exponentialRampToValueAtTime(45,t+.14);
+  g.gain.setValueAtTime(.75,t);g.gain.exponentialRampToValueAtTime(.001,t+.18);
+  o.connect(g);g.connect(audio.rhythm);o.start(t);o.stop(t+.2);
+
+  recordMidiEvent(0x99, 36, 100);
+  setTimeout(() => recordMidiEvent(0x89, 36, 0), 100);
 }
 
+function noise(duration,cutoff,volume){
+  if(!audio)return;
+  const len=Math.floor(audio.ctx.sampleRate*duration),buffer=audio.ctx.createBuffer(1,len,audio.ctx.sampleRate),data=buffer.getChannelData(0);
+  for(let i=0;i<len;i++)data[i]=Math.random()*2-1;
+  const s=audio.ctx.createBufferSource(),f=audio.ctx.createBiquadFilter(),g=audio.ctx.createGain(),t=audio.ctx.currentTime;
+  s.buffer=buffer;f.type="highpass";f.frequency.value=cutoff;
+  g.gain.setValueAtTime(volume,t);g.gain.exponentialRampToValueAtTime(.001,t+duration);
+  s.connect(f);f.connect(g);g.connect(audio.rhythm);s.start(t);
+
+  const midiPercNote = cutoff > 2000 ? 42 : 38;
+  recordMidiEvent(0x99, midiPercNote, 80);
+  setTimeout(() => recordMidiEvent(0x89, midiPercNote, 0), Math.round(duration * 1000));
+}
+
+function rhythmTick(){
+  const name=document.getElementById("rhythm").value;
+  const pat=PATTERNS[name],step=rhythmStep%pat.len;
+  if(pat.k.includes(step))kick();if(pat.s.includes(step))noise(.12,1100,.35);if(pat.h.includes(step))noise(.045,5000,.15);
+  rhythmStep++;
+}
+
+function schedule(){
+  if(!playing)return;
+  rhythmTick();
+  const name=document.getElementById("rhythm").value,bpm=Number(document.getElementById("tempo").value),sub=PATTERNS[name]?PATTERNS[name].sub:4;
+  rhythmTimer=setTimeout(schedule,(60000/bpm)/sub);
+}
+
+function start(){resumeAudio();playing=true;rhythmStep=0;document.getElementById("play").textContent="â–  Stop";document.getElementById("play").classList.add("playing");schedule();}
+function stop(){playing=false;clearTimeout(rhythmTimer);rhythmTimer=null;document.getElementById("play").textContent="▶ Start";document.getElementById("play").classList.remove("playing");}
+
+function render(){
+  renderTabs();
+  renderChromatic();
+  updateInfo(sustainActive || (chordPicker!=="sustain" && chordPicker!=="legato"));
+}
+
+const controlsDropdown = document.getElementById("controlsDropdown");
 const recordDropdown = document.getElementById("recordDropdown");
+const sidebarToggle = document.getElementById("sidebarToggle");
 const recordToggle = document.getElementById("recordToggle");
 const saveMidiBtn = document.getElementById("saveMidiBtn");
 const discardMidiBtn = document.getElementById("discardMidiBtn");
 const advBtn = document.getElementById("advBtn");
 
+sidebarToggle.addEventListener("click", (e) => {
+  e.stopPropagation();
+  recordDropdown.classList.add("collapsed");
+  controlsDropdown.classList.toggle("collapsed");
+});
+
 recordToggle.addEventListener("click", (e) => {
   e.stopPropagation();
+  
   stopSustain();
 
   if (!isRecording) {
+    controlsDropdown.classList.add("collapsed");
     recordDropdown.classList.add("collapsed");
     
     isRecording = true;
@@ -1659,6 +1322,11 @@ discardMidiBtn.addEventListener("click", () => {
 });
 
 document.addEventListener("pointerdown", (e) => {
+  if (!controlsDropdown.classList.contains("collapsed")) {
+    if (!controlsDropdown.contains(e.target) && !sidebarToggle.contains(e.target)) {
+      controlsDropdown.classList.add("collapsed");
+    }
+  }
   if (!recordDropdown.classList.contains("collapsed")) {
     if (!recordDropdown.contains(e.target) && !recordToggle.contains(e.target)) {
       recordDropdown.classList.add("collapsed");
@@ -1677,17 +1345,14 @@ advHighlightBtnEl.addEventListener("pointerdown", (e) => {
     chromaticHighlightState = 0;
     chromaticHighlights.clear();
   }
-  renderSelectors();
+  renderTabs();
   applyScaleHighlights();
 });
 
 advBtn.addEventListener("click", (e) => {
   advMode = !advMode;
-  if (advMode) {
-    advBtn.classList.add("active");
-  } else {
-    advBtn.classList.remove("active");
-  }
+  e.target.style.background = advMode ? "#3a3a3c" : "#1c1c1e";
+  e.target.style.color = advMode ? "#fff" : "#f2f2f7";
   document.getElementById("pianoKeyboard").style.display = advMode ? "none" : "flex";
   document.getElementById("advChordsKeyboard").style.display = advMode ? "flex" : "none";
 });
@@ -1698,21 +1363,43 @@ document.getElementById("chordWave").addEventListener("change", () => {
 
 document.getElementById("chordPicker").addEventListener("change", e => {
   chordPicker = e.target.value;
-  const rhythmSelectWrap = document.getElementById("rhythmSelectWrap");
-  if (rhythmSelectWrap) {
-    rhythmSelectWrap.style.display = (chordPicker === "rhythm") ? "flex" : "none";
-  }
   stopSustain();
-  stopRhythm();
-  updateChordDecayState();
   updateInfo(false);
 });
-
-document.getElementById("rhythmSelect").addEventListener("change", () => {
-  if (rhythmRunning) {
-    rhythmCurrentStep = 0;
-  }
+document.getElementById("tempo").addEventListener("input",e=>document.getElementById("tempoValue").textContent=e.target.value);
+document.getElementById("rhythmVolume").addEventListener("input",e=>{
+  const val = e.target.value;
+  document.getElementById("rhythmVolumeValue").textContent = val + "%";
+  resumeAudio();
+  if(audio) audio.rhythm.gain.value = (Number(val)/100) * 2.5;
 });
+document.getElementById("chordVolume").addEventListener("input",e=>document.getElementById("chordVolumeValue").textContent=e.target.value+"%");
+document.getElementById("harpVolume").addEventListener("input",e=>document.getElementById("harpVolumeValue").textContent=e.target.value+"%");
+document.getElementById("pianoVolume").addEventListener("input",e=>document.getElementById("pianoVolumeValue").textContent=e.target.value+"%");
+
+document.getElementById("chordRelease").addEventListener("input",e=>{
+  const val = Number(e.target.value);
+  const min = 0.15, max = 2;
+  const pct = Math.round(((val - min) / (max - min)) * 100);
+  document.getElementById("chordReleaseValue").textContent = pct + "%";
+});
+
+document.getElementById("harpRelease").addEventListener("input",e=>{
+  const val = Number(e.target.value);
+  const min = 0.15, max = 2;
+  const pct = Math.round(((val - min) / (max - min)) * 100);
+  document.getElementById("harpReleaseValue").textContent = pct + "%";
+});
+
+document.getElementById("pianoRelease").addEventListener("input",e=>{
+  const val = Number(e.target.value);
+  const min = 0.15, max = 2;
+  const pct = Math.round(((val - min) / (max - min)) * 100);
+  document.getElementById("pianoReleaseValue").textContent = pct + "%";
+});
+
+document.getElementById("play").addEventListener("pointerdown",()=>{if(playing)stop();else start();});
+document.getElementById("rhythm").addEventListener("change",()=>{if(playing){stop();start();}});
 
 window.addEventListener("resize", () => {
   updateScaling();
@@ -1721,14 +1408,12 @@ window.addEventListener("resize", () => {
 
 document.addEventListener("keydown",e=>{
   if(e.repeat||["INPUT","SELECT","TEXTAREA"].includes(e.target.tagName))return;
-  if(e.code in HARP_KEYS){e.preventDefault();playHarpNote(HARP_KEYS[e.code]);return;
-  }
+  if(e.code in HARP_KEYS){e.preventDefault();playHarpNote(HARP_KEYS[e.code]);return;}
 });
 
 initPiano();
 renderAdvChords();
 render();
-initKnobs();
 
 window.addEventListener("load", ()=>{
   updateScaling();
