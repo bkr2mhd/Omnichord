@@ -41,17 +41,18 @@ body{
   width:1160px;
   min-width:1160px;
   max-width:1160px;
-  aspect-ratio:2 / 1;
+  height:580px;
+  min-height:580px;
+  max-height:580px;
   display:flex;
   gap:16px;
   align-items:flex-start;
   position:relative;
-  transform-origin:top center;
-  transition:transform 0.05s ease-out;
+  transform-origin:center center;
 }
 
-.center-content{flex:1;height:100%;display:flex;flex-direction:column;gap:12px;min-width:0;position:relative;}
-.vertical-harp{width:160px;display:flex;flex-direction:column;gap:12px;flex-shrink:0;}
+.center-content{flex:0 0 984px;width:984px;height:100%;display:flex;flex-direction:column;gap:12px;min-width:984px;position:relative;}
+.vertical-harp{width:auto;min-width:160px;flex:1;display:flex;flex-direction:column;gap:12px;}
 
 .transport,.select-wrap,.range-wrap{
   background:#1c1c1e;border:1px solid #2c2c2e;border-radius:10px;
@@ -103,7 +104,7 @@ select{border:0;outline:none;background:#1c1c1e;color:#f2f2f7;font-size:12px;col
 
 .top-toolbar{
   background:#1c1c1e;border:1px solid #2c2c2e;border-radius:14px;padding:8px 12px;
-  display:flex;align-items:center;justify-content:space-between;gap:8px;width:100%;height:92px;position:relative;overflow:visible;
+  display:flex;align-items:center;justify-content:space-between;gap:8px;width:100%;height:92px;flex-shrink:0;position:relative;overflow:visible;
 }
 
 .toolbar-divider{
@@ -274,6 +275,7 @@ select{border:0;outline:none;background:#1c1c1e;color:#f2f2f7;font-size:12px;col
   flex: 1;
   min-height: 0;
 }
+#chordArea{flex:0 0 auto;}
 .piano-wrap{
   display:flex;
   gap:0;
@@ -1907,19 +1909,28 @@ function updateScaling(){
   const app = document.getElementById("appContainer");
   if(!app) return;
   const baseWidth = 1160;
-  const winWidth = window.innerWidth - 20;
-  
-  if(window.innerWidth < 1180){
-    const scale = winWidth / baseWidth;
-    app.style.transform = `scale(${scale})`;
-    const unscaledHeight = app.scrollHeight;
-    const scaledHeight = unscaledHeight * scale;
-    const diff = unscaledHeight - scaledHeight;
-    app.style.marginBottom = `-${diff}px`;
-  } else {
-    app.style.transform = "none";
-    app.style.marginBottom = "0px";
-  }
+  const baseHeight = 580;
+  const availableWidth = window.innerWidth - 20;
+  const availableHeight = window.innerHeight - 20;
+  const iphoneMiniLandscape = { width: 812, height: 375 };
+  const ipadMiniLandscape = { width: 1024, height: 768 };
+  const minimumScale = Math.min(
+    (iphoneMiniLandscape.width - 20) / baseWidth,
+    (iphoneMiniLandscape.height - 20) / baseHeight
+  );
+  const maximumScale = Math.min(
+    (ipadMiniLandscape.width - 20) / baseWidth,
+    (ipadMiniLandscape.height - 20) / baseHeight
+  );
+  const viewportScale = Math.min(
+    availableWidth / baseWidth,
+    availableHeight / baseHeight
+  );
+  const scale = viewportScale < minimumScale
+    ? viewportScale
+    : Math.min(maximumScale, viewportScale);
+
+  app.style.transform = `scale(${scale})`;
 }
 
 function handlePointerDrag(e){
