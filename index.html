@@ -402,6 +402,42 @@ button:focus-visible{
 .harp-lane:hover{background:#2c2c2e}
 .harp-lane.played{background:#3a3a3c}
 
+@media (max-aspect-ratio: 1/1) {
+  .app{
+    width:984px;
+    min-width:984px;
+    max-width:984px;
+    height:1176px;
+    min-height:1176px;
+    max-height:1176px;
+    flex-direction:column;
+  }
+  .center-content{
+    flex:0 0 580px;
+    width:984px;
+    min-width:984px;
+    height:580px;
+  }
+  .vertical-harp{
+    width:984px;
+    min-width:984px;
+    height:580px;
+    min-height:580px;
+    flex:0 0 580px;
+  }
+  .harp-grid{
+    grid-template-columns:repeat(12,1fr);
+    grid-template-rows:1fr;
+  }
+  .harp-lane{
+    border-bottom:0;
+    border-right:1px solid #2c2c2e;
+  }
+  .harp-lane:last-child{
+    border-right:0;
+  }
+}
+
 </style>
 </head>
 <body>
@@ -1320,16 +1356,16 @@ function renderAdvChords(){
   });
 }
 
-async function selectChord(root, type){
+function selectChord(root, type){
   const isSame = (root === currentRoot && type === currentType);
   currentRoot = root;
   currentType = type;
   updateInfo(false);
-  await handleChordPlay(isSame);
+  handleChordPlay(isSame);
 }
 
-async function handleChordPlay(isSame) {
-  if (!await ensureAudioReady()) return;
+function handleChordPlay(isSame) {
+  if (!ensureAudioReady()) return;
   if (chordPicker === "rhythm") {
     stopSustain();
     stopArpeggio();
@@ -1387,8 +1423,8 @@ let activePianoPointers = new Map();
 let activePianoKeys = new Map();
 let lastPianoKey=-1;
 
-async function playPianoNote(midi, keyEl) {
-    if (!await ensureAudioReady()) return;
+function playPianoNote(midi, keyEl) {
+    if (!ensureAudioReady()) return;
     const pianoVolFactor = Number(document.getElementById("pianoVolume").value)/100;
     const vol = 0.16 * pianoVolFactor;
     playTone(midi, vol, null, getPianoWave(), getPianoRelease(), null, 2);
@@ -1446,9 +1482,9 @@ function initPiano(){
     container.appendChild(key);
   }
 
-  container.addEventListener("pointerdown", async e => {
+  container.addEventListener("pointerdown", e => {
     e.preventDefault();
-    if (!await ensureAudioReady()) return;
+    if (!ensureAudioReady()) return;
     pianoDragging = true;
     activePianoPointers.set(e.pointerId, { x: e.clientX, y: e.clientY });
     activePianoPointerId = e.pointerId;
@@ -1691,31 +1727,15 @@ function resumeAudio(){
   }
   return audio;
 }
-async function ensureAudioReady(){
+function ensureAudioReady(){
   const currentAudio = resumeAudio();
   if (!currentAudio) return null;
-  if (currentAudio.ctx.state !== "running") {
-    if (!audioResumePromise) {
-      resumeAudio();
-    }
-    try {
-      if (audioResumePromise && !await audioResumePromise) {
-        return null;
-      }
-      if (currentAudio.ctx.state !== "running") {
-        return null;
-      }
-    } catch (err) {
-      console.warn("Audio context resume failed:", err);
-      return null;
-    }
-  }
   return currentAudio;
 }
 function midiFreq(m){return 440*Math.pow(2,(m-69)/12)}
 
 function playTone(midi, volume=.13, dest, waveType="square", decayTime=.25, scheduledTime=null, channel=0){
-  if(!audio || audio.ctx.state !== "running") return null;
+  if(!audio || audio.ctx.state === "closed") return null;
   const o = audio.ctx.createOscillator(), g = audio.ctx.createGain();
   const t = (scheduledTime !== null && scheduledTime >= audio.ctx.currentTime) ? scheduledTime : audio.ctx.currentTime;
   o.type = ["sine","square","sawtooth","triangle"].includes(waveType) ? waveType : "square";
@@ -2024,8 +2044,9 @@ function syncHeights(){
 function updateScaling(){
   const app = document.getElementById("appContainer");
   if(!app) return;
-  const baseWidth = 1160;
-  const baseHeight = 580;
+  const isPortrait = window.innerHeight > window.innerWidth;
+  const baseWidth = isPortrait ? 984 : 1160;
+  const baseHeight = isPortrait ? 1176 : 580;
   const viewportScale = Math.min(
     window.innerWidth / baseWidth,
     window.innerHeight / baseHeight
@@ -2060,9 +2081,9 @@ function handlePointerDrag(e){
 }
 
 const harpGridEl=document.getElementById("harpGrid");
-harpGridEl.addEventListener("pointerdown",async e=>{
+harpGridEl.addEventListener("pointerdown",e=>{
   e.preventDefault();
-  if (!await ensureAudioReady()) return;
+  if (!ensureAudioReady()) return;
   harpDragging=true;
   activePointerId=e.pointerId;
   activeHarpPointers.set(e.pointerId, { x: e.clientX, y: e.clientY });
@@ -2219,6 +2240,13 @@ document.getElementById("chordPicker").addEventListener("change", e => {
 window.addEventListener("resize", () => {
   updateScaling();
   syncHeights();
+});
+
+window.addEventListener("orientationchange", () => {
+  requestAnimationFrame(() => {
+    updateScaling();
+    syncHeights();
+  });
 });
 
 let pianoModeKeyboard = false;
