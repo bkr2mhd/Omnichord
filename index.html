@@ -435,6 +435,26 @@ button:focus-visible{
 .harp-lane:hover{background:#2c2c2e}
 .harp-lane.played{background:#3a3a3c}
 
+@media (min-aspect-ratio: 1/1) {
+  .app{
+    padding-top:104px;
+  }
+  .center-content{
+    height:476px;
+    min-height:476px;
+  }
+  .top-toolbar{
+    position:absolute;
+    top:-104px;
+    left:0;
+    width:1160px;
+  }
+  .vertical-harp{
+    height:476px;
+    min-height:476px;
+  }
+}
+
 @media (max-aspect-ratio: 1/1) {
   .app{
     width:984px;
