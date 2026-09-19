@@ -14,6 +14,7 @@
 <title>Omnichord</title>
 <style>
 *{box-sizing:border-box}
+:root{--panel-spacing:12px;--chord-spacing:8px;--control-radius:8px}
 html,body{margin:0;height:100%;overflow:hidden;}
 body{
   height:100vh;
@@ -45,24 +46,24 @@ body{
   min-height:580px;
   max-height:580px;
   display:flex;
-  gap:16px;
+  gap:var(--panel-spacing);
   align-items:flex-start;
   position:relative;
   transform-origin:center center;
 }
 
-.center-content{flex:0 0 984px;width:984px;height:100%;display:flex;flex-direction:column;gap:12px;min-width:984px;position:relative;}
-.vertical-harp{width:auto;min-width:160px;flex:1;display:flex;flex-direction:column;gap:12px;}
+.center-content{flex:0 0 984px;width:984px;height:100%;display:flex;flex-direction:column;gap:0;min-width:984px;position:relative;}
+.vertical-harp{width:auto;min-width:160px;flex:1;display:flex;flex-direction:column;gap:var(--panel-spacing);}
 
 .transport,.select-wrap,.range-wrap{
-  background:#1c1c1e;border:1px solid #2c2c2e;border-radius:10px;
+  background:#1c1c1e;border:1px solid #2c2c2e;border-radius:var(--control-radius);
   min-height:36px;display:flex;align-items:center;width:100%;padding:0 10px;justify-content:center;gap:12px;
 }
 select{border:0;outline:none;background:#1c1c1e;color:#f2f2f7;font-size:12px;color-scheme:dark;text-align:right}
 
 .beat-row{display:flex;gap:8px;width:100%;align-items:center;}
 .beat-row .transport{flex:1;margin:0;min-height:36px;}
-.transport{background:#1c1c1e;border:1px solid #2c2c2e;border-radius:10px;color:#fff;cursor:pointer;font-size:13px;font-weight:600;}
+.transport{background:#1c1c1e;border:1px solid #2c2c2e;border-radius:var(--control-radius);color:#fff;cursor:pointer;font-size:13px;font-weight:600;}
 .transport:hover{background:#2c2c2e}
 
 .dialogue-btn{
@@ -70,7 +71,7 @@ select{border:0;outline:none;background:#1c1c1e;color:#f2f2f7;font-size:12px;col
   border:1px solid #3a3a3c;
   color:#f2f2f7;
   height:36px;
-  border-radius:10px;
+  border-radius:var(--control-radius);
   cursor:pointer;
   display:flex;
   align-items:center;
@@ -103,7 +104,7 @@ select{border:0;outline:none;background:#1c1c1e;color:#f2f2f7;font-size:12px;col
 .section-label-header{font-size:10px;font-weight:700;color:#636366;text-transform:uppercase;letter-spacing:.8px;margin-top:4px;padding-left:2px;}
 
 .top-toolbar{
-  background:#1c1c1e;border:1px solid #2c2c2e;border-radius:14px;padding:8px 16px;
+  background:#1c1c1e;border:1px solid #2c2c2e;border-radius:12px;padding:8px 16px;
   display:flex;align-items:center;justify-content:space-between;gap:8px;width:100%;height:92px;flex-shrink:0;position:relative;overflow:visible;
 }
 
@@ -113,7 +114,7 @@ select{border:0;outline:none;background:#1c1c1e;color:#f2f2f7;font-size:12px;col
 
 .controls-btn{
   background:#2c2c2e;border:1px solid #3a3a3c;color:#f2f2f7;width:36px;height:36px;
-  border-radius:10px;cursor:pointer;display:flex;align-items:center;justify-content:center;
+  border-radius:var(--control-radius);cursor:pointer;display:flex;align-items:center;justify-content:center;
   flex-shrink:0;transition:background .15s, border-color .15s;font-size:16px;
 }
 .controls-btn:hover{background:#3a3a3c}
@@ -150,7 +151,7 @@ button:focus-visible{
 
 .record-dropdown{
   position:absolute;top:102px;left:0;width:320px;
-  background:#1c1c1e;border:1px solid #2c2c2e;border-radius:14px;padding:14px;
+  background:#1c1c1e;border:1px solid #2c2c2e;border-radius:12px;padding:14px;
   z-index:2000;box-shadow:0 20px 40px rgba(0,0,0,0.9);
   display:flex;flex-direction:column;gap:8px;overflow-y:auto;
   transform-origin:top;transform:scaleY(1);opacity:1;
@@ -168,7 +169,7 @@ button:focus-visible{
   padding:8px;
   background:#1c1c1e;
   border:1px solid #2c2c2e;
-  border-radius:12px;
+  border-radius:10px;
   z-index:2100;
   box-shadow:0 20px 40px rgba(0,0,0,0.9);
   transform-origin:top left;
@@ -185,7 +186,7 @@ button:focus-visible{
   width:100%;
   height:34px;
   border:1px solid #3a3a3c;
-  border-radius:8px;
+  border-radius:var(--control-radius);
   background:#2c2c2e;
   color:#f2f2f7;
   cursor:pointer;
@@ -209,7 +210,7 @@ button:focus-visible{
 
 .chromatic-highlight-ctrl-btn{
   height:26px;border:1px solid #2c2c2e;background:#1c1c1e;color:#8e8e93;
-  border-radius:6px;font-size:10px;font-weight:600;cursor:pointer;
+  border-radius:var(--control-radius);font-size:10px;font-weight:600;cursor:pointer;
   display:flex;align-items:center;justify-content:center;transition:background .15s, border-color .15s;
   padding:0 4px;white-space:nowrap;flex-shrink:0;
 }
@@ -230,9 +231,14 @@ button:focus-visible{
   color:#30d158;
   border-color:#30d158;
 }
+#arpeggioPaddingToggle{
+  width:76px;
+  min-width:76px;
+  flex:0 0 76px;
+}
 
 .select-wrap-sm{
-  background:#111113;border:1px solid #2c2c2e;border-radius:6px;
+  background:#111113;border:1px solid #2c2c2e;border-radius:var(--control-radius);
   height:26px;display:flex;align-items:center;padding:0 6px;gap:4px;
 }
 .select-wrap-sm label{font-size:9px;color:#8e8e93;text-transform:uppercase;letter-spacing:.4px;white-space:nowrap;}
@@ -243,16 +249,38 @@ button:focus-visible{
   display: flex;
   flex-direction: column;
   gap: 4px;
-  width: 155px;
+  width: 262px;
   flex-shrink: 0;
   height: 76px;
   justify-content: center;
 }
 .articulation-sub-row {
   display: flex;
-  gap: 4px;
+  gap: 8px;
   width: 100%;
   align-items: center;
+}
+.articulation-sub-row#arpeggioSubControls{
+  justify-content:flex-start;
+  padding-right:2px;
+}
+.articulation-sub-row#arpeggioSubControls > .select-wrap-sm,
+.articulation-sub-row#arpeggioSubControls > #arpeggioPaddingToggle{
+  flex:0 0 auto;
+}
+.articulation-sub-row#arpeggioSubControls > .select-wrap-sm,
+.articulation-sub-row#rhythmSubControls > .select-wrap-sm{
+  flex:1 1 0;
+  width:auto !important;
+  min-width:0;
+}
+.articulation-sub-row#rhythmSubControls{
+  justify-content:flex-start;
+  padding-right:2px;
+}
+.articulation-sub-row#arpeggioSubControls > [data-for="arpeggioTempo"],
+.articulation-sub-row#rhythmSubControls > [data-for="rhythmTempo"]{
+  margin-left:0;
 }
 
 .instrument-rows{
@@ -314,14 +342,14 @@ button:focus-visible{
 .chord-sections{
   display:flex;
   flex-direction:column;
-  gap:8px;
+  gap:var(--chord-spacing);
   container-type: inline-size;
 }
 .section{display:flex;flex-direction:row;align-items:stretch;width:100%;}
 .chords{display:grid;grid-template-columns:repeat(12, 1fr);gap:4px;flex:1;width:100%;}
 
 .chord{
-  border:1px solid #2c2c2e;background:#1c1c1e;color:#d1d1d6;border-radius:9px;
+  border:1px solid #2c2c2e;background:#1c1c1e;color:#d1d1d6;border-radius:12px;
   aspect-ratio: 1 / 1; padding:2px; cursor:pointer;position:relative;
   display:flex;flex-direction:column;justify-content:center;align-items:center;
   width:100%;touch-action:manipulation;
@@ -339,7 +367,8 @@ button:focus-visible{
 #lowerArea {
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 0;
+  margin-top:var(--chord-spacing);
   width: 100%;
   flex: 1;
   min-height: 0;
@@ -353,17 +382,19 @@ button:focus-visible{
   min-height:0;
   background:#1c1c1e;
   border:1px solid #2c2c2e;
-  border-radius:12px;
+  border-radius:10px;
   padding:0; 
   box-sizing:border-box;
   overflow:hidden;
   touch-action:none; 
 }
 .piano-key{
-  flex:1;
+  flex:1 1 0;
+  min-width:0;
+  width:0;
   height:100%;
   border:0;
-  border-right:1px solid #2c2c2e;
+  border-right:0;
   border-radius:0;
   background:#1c1c1e;
   display:flex;
@@ -382,9 +413,7 @@ button:focus-visible{
 .piano-key.played{
   background:#3a3a3c !important;
 }
-.piano-key:last-child {
-  border-right:0;
-}
+.piano-key:not(:last-child){border-right:1px solid #2c2c2e;}
 .piano-key.is-black{
   background:#111113;
 }
@@ -421,7 +450,7 @@ button:focus-visible{
 }
 
 .harp-container{
-  background:#1c1c1e;border:1px solid #2c2c2e;border-radius:14px;
+  background:#1c1c1e;border:1px solid #2c2c2e;border-radius:12px;
   overflow:hidden;touch-action:none;display:flex;flex-direction:column;flex:1;
 }
 .harp-grid{flex:1;display:grid;grid-template-rows:repeat(12,1fr);position:relative;}
@@ -470,6 +499,10 @@ button:focus-visible{
     width:984px;
     min-width:984px;
     height:580px;
+    gap:0;
+  }
+  .center-content > #chordArea{
+    margin-top:var(--panel-spacing);
   }
   .vertical-harp{
     width:984px;
@@ -501,8 +534,9 @@ button:focus-visible{
   <input id="chordRelease" type="range" min="0.15" max="5" step="0.05" value="0.6">
   <input id="harpRelease" type="range" min="0.15" max="5" step="0.05" value="1.15">
   <input id="pianoRelease" type="range" min="0.15" max="5" step="0.05" value="1.15">
-  <input id="arpeggioTempo" type="range" min="100" max="300" value="120">
+  <input id="arpeggioTempo" type="range" min="100" max="380" value="180">
   <input id="rhythmTempo" type="range" min="60" max="240" value="120">
+  <input id="rhythmSubVolume" type="range" min="0" max="100" value="70">
 </div>
 
 <div class="app-wrapper">
@@ -566,7 +600,7 @@ button:focus-visible{
         </div>
 
         <div class="articulation-sub-row" id="arpeggioSubControls" style="display:none;">
-          <div class="select-wrap-sm" style="width:125px;">
+          <div class="select-wrap-sm" style="width:110px; flex-shrink:0;">
             <label for="arpeggioStyleSelect">style</label>
             <select id="arpeggioStyleSelect">
               <option value="up" selected>Up</option>
@@ -574,14 +608,15 @@ button:focus-visible{
               <option value="pendulum">Pendulum</option>
             </select>
           </div>
+          <button type="button" class="chromatic-highlight-ctrl-btn" id="arpeggioPaddingToggle" aria-pressed="false">Strict</button>
           <div class="knob-container" data-for="arpeggioTempo" style="flex-shrink:0;">
             <div class="knob" style="width:18px;height:18px;"><div class="knob-indicator"></div></div>
-            <span class="knob-label">Tempo</span>
+            <span class="knob-label">BPM</span>
           </div>
         </div>
 
         <div class="articulation-sub-row" id="rhythmSubControls" style="display:none;">
-          <div class="select-wrap-sm" style="width:125px;">
+          <div class="select-wrap-sm" style="width:160px; flex-shrink:0;">
             <label for="rhythmSelect">style</label>
             <select id="rhythmSelect">
               <option value="8beat">8-Beat</option>
@@ -591,11 +626,18 @@ button:focus-visible{
               <option value="rock">Rock</option>
               <option value="disco">Disco</option>
               <option value="swing">Swing</option>
+              <option value="takefive">Take Five</option>
+              <option value="kalamatianos">Kalamatianos</option>
+              <option value="shuffle">Shuffle</option>
             </select>
+          </div>
+          <div class="knob-container" data-for="rhythmSubVolume" style="flex-shrink:0;">
+            <div class="knob" style="width:18px;height:18px;"><div class="knob-indicator"></div></div>
+            <span class="knob-label">Sub</span>
           </div>
           <div class="knob-container" data-for="rhythmTempo" style="flex-shrink:0;">
             <div class="knob" style="width:18px;height:18px;"><div class="knob-indicator"></div></div>
-            <span class="knob-label">Tempo</span>
+            <span class="knob-label">BPM</span>
           </div>
         </div>
       </div>
@@ -611,7 +653,7 @@ button:focus-visible{
           </div>
           <div class="knob-container" data-for="chordRelease">
             <div class="knob"><div class="knob-indicator"></div></div>
-            <span class="knob-label">Decay</span>
+            <span class="knob-label">DEC</span>
           </div>
           <div class="select-wrap-sm" style="width:125px;">
             <label for="chordWave">timbre</label>
@@ -632,7 +674,7 @@ button:focus-visible{
           </div>
           <div class="knob-container" data-for="harpRelease">
             <div class="knob"><div class="knob-indicator"></div></div>
-            <span class="knob-label">Decay</span>
+            <span class="knob-label">DEC</span>
           </div>
           <div class="select-wrap-sm" style="width:125px;">
             <label for="harpWave">timbre</label>
@@ -653,7 +695,7 @@ button:focus-visible{
           </div>
           <div class="knob-container" data-for="pianoRelease">
             <div class="knob"><div class="knob-indicator"></div></div>
-            <span class="knob-label">Decay</span>
+            <span class="knob-label">DEC</span>
           </div>
           <div class="select-wrap-sm" style="width:125px;">
             <label for="pianoWave">timbre</label>
@@ -748,7 +790,10 @@ const RHYTHM_PATTERNS = {
   "bossanova": { stepTime: 0.13, steps: 16, events: [{ bass: "root", chord: true, accent: true }, null, null, { chord: true }, null, null, { bass: "5th", chord: true }, null, { bass: "root" }, null, { chord: true }, null, { bass: "5th", chord: true }, null, { chord: true }, null] },
   "rock": { stepTime: 0.125, steps: 16, events: [{ bass: "root", chord: true, accent: true }, null, { bass: "root" }, null, { chord: true, accent: true }, null, { bass: "5th" }, null, { bass: "root", chord: true, accent: true }, null, { bass: "root" }, null, { chord: true, accent: true }, null, { chord: true }, null] },
   "disco": { stepTime: 0.125, steps: 16, events: [{ bass: "root", accent: true }, null, { chord: true }, null, { bass: "root", accent: true }, null, { chord: true }, null, { bass: "root", accent: true }, null, { chord: true }, null, { bass: "root", accent: true }, null, { chord: true }, { chord: true }] },
-  "swing": { stepTime: 0.18, steps: 8, events: [{ bass: "root", chord: true, accent: true }, null, { chord: true }, { chord: true }, { bass: "5th", chord: true }, null, { chord: true }, { chord: true }] }
+  "swing": { stepTime: 0.18, steps: 8, events: [{ bass: "root", chord: true, accent: true }, null, { chord: true }, { chord: true }, { bass: "5th", chord: true }, null, { chord: true }, { chord: true }] },
+  "takefive": { stepTime: 0.5, steps: 5, events: [{ bass: "root", chord: true, accent: true }, { chord: true }, { chord: true }, { bass: "5th", chord: true, accent: true }, { chord: true }] },
+  "kalamatianos": { stepTime: 0.25, steps: 7, events: [{ bass: "root", chord: true, accent: true }, { chord: true }, { bass: "5th", chord: true, accent: true }, { chord: true }, { bass: "root", chord: true, accent: true }, { chord: true }, { chord: true }] },
+  "shuffle": { stepTime: 0.25, steps: 12, events: [{ bass: "root", chord: true, accent: true }, { chord: true }, { chord: true }, { bass: "5th", chord: true, accent: true }, { chord: true }, { chord: true }, { bass: "root", chord: true, accent: true }, { chord: true }, { chord: true }, { bass: "5th", chord: true, accent: true }, { chord: true }, { chord: true }] }
 };
 
 let selectedKey=null;
@@ -779,6 +824,7 @@ let arpeggioRunning = false;
 let arpeggioCurrentStep = 0;
 let arpeggioNextNoteTime = 0;
 let arpeggioTimerId = null;
+let arpeggioWidePadding = false;
 
 let chromaticHighlightState = 0;
 let chromaticHighlights = new Set();
@@ -1059,7 +1105,8 @@ function showKnobInfo(inputId, val) {
     pianoVolume: "Piano volume",
     pianoRelease: "Piano decay",
     arpeggioTempo: "Arpeggio tempo",
-    rhythmTempo: "Rhythm tempo"
+    rhythmTempo: "Rhythm tempo",
+    rhythmSubVolume: "Rhythm sub volume"
   };
   document.getElementById("current").textContent = titleCase(labels[inputId] || "Control");
   document.getElementById("notes").textContent = formatControlValue(inputId, val);
@@ -1601,7 +1648,7 @@ function updatePianoHighlights(){
 
       key.style.background = isBlack ? "#111113" : "#1c1c1e";
       key.style.border = "0";
-      key.style.borderRight = "1px solid #2c2c2e";
+      key.style.borderRight = key === keys[keys.length - 1] ? "0" : "1px solid #2c2c2e";
 
       if (isManuallyHighlightedRoot) {
         key.classList.add("has-note");
@@ -1633,7 +1680,7 @@ function updatePianoHighlights(){
 
       key.style.background = isBlack ? "#111113" : "#1c1c1e";
       key.style.border = "0";
-      key.style.borderRight = "1px solid #2c2c2e";
+      key.style.borderRight = key === keys[keys.length - 1] ? "0" : "1px solid #2c2c2e";
 
       if (degreeIdx !== undefined) {
         key.classList.add("has-note");
@@ -1871,6 +1918,8 @@ function nextRhythmStep() {
   let stepDiv = 4;
   if (style === "waltz") stepDiv = 3;
   if (style === "8beat" || style === "swing") stepDiv = 2;
+  if (style === "takefive") stepDiv = 1;
+  if (style === "kalamatianos" || style === "shuffle") stepDiv = 2;
   const secondsPerStep = secondsPerBeat / stepDiv;
   
   const pattern = RHYTHM_PATTERNS[style] || RHYTHM_PATTERNS["8beat"];
@@ -1888,12 +1937,13 @@ function scheduleRhythmStep(step, time) {
   const bassBase = 36 + currentRoot;
   const chordWave = getChordWave();
   const chordVolFactor = Number(document.getElementById("chordVolume").value)/100;
+  const subVolFactor = Number(document.getElementById("rhythmSubVolume")?.value || 70)/100;
   const decay = Math.min(getChordRelease(), 0.4);
 
   if (event.bass) {
     let bassMidi = bassBase;
     if (event.bass === "5th") bassMidi += 7;
-    const bassVol = (event.accent ? 0.22 : 0.16) * chordVolFactor;
+    const bassVol = (event.accent ? 0.22 : 0.16) * subVolFactor;
     playTone(bassMidi, bassVol, null, "sawtooth", decay, time, 0);
   }
 
@@ -1955,15 +2005,39 @@ function getArpeggioIndices(numNotes, style) {
   }
 }
 
+function updateArpeggioPaddingState() {
+  const styleSelect = document.getElementById("arpeggioStyleSelect");
+  const paddingToggle = document.getElementById("arpeggioPaddingToggle");
+  if (!styleSelect || !paddingToggle) return;
+  const disabled = styleSelect.value === "pendulum";
+  paddingToggle.disabled = disabled;
+  paddingToggle.textContent = arpeggioWidePadding ? "Padding" : "Strict";
+  paddingToggle.setAttribute("aria-pressed", String(arpeggioWidePadding));
+  paddingToggle.className = arpeggioWidePadding
+    ? "chromatic-highlight-ctrl-btn voicing-state"
+    : "chromatic-highlight-ctrl-btn";
+  paddingToggle.style.opacity = disabled ? "0.3" : "1";
+  paddingToggle.style.pointerEvents = disabled ? "none" : "auto";
+}
+
 function scheduleArpeggioStep(time) {
   const voicedMidi = getChordVoicedMidi(currentRoot, currentType);
   const style = document.getElementById("arpeggioStyleSelect")?.value || "up";
   const indices = getArpeggioIndices(voicedMidi.length, style);
-  
-  const idx = indices[arpeggioCurrentStep % indices.length];
+  const paddingEnabled = style !== "pendulum" && voicedMidi.length === 3 && arpeggioWidePadding;
+  const sequenceLength = indices.length + (paddingEnabled ? 1 : 0);
+  const sequenceStep = arpeggioCurrentStep % sequenceLength;
+  const idx = indices[sequenceStep];
   arpeggioCurrentStep++;
 
-  const midi = voicedMidi[idx];
+  let midi = voicedMidi[idx];
+  if (paddingEnabled && sequenceStep === indices.length) {
+    const firstMidi = voicedMidi[indices[0]];
+    const octaveOffset = arpeggioWidePadding
+      ? (style === "down" ? -12 : 12)
+      : 0;
+    midi = firstMidi + octaveOffset;
+  }
   const activeWave = getChordWave();
   const chordVolFactor = Number(document.getElementById("chordVolume").value)/100;
   const vol = 0.18 * chordVolFactor;
@@ -2314,6 +2388,17 @@ document.getElementById("chordWave").addEventListener("change", () => {
   stopSustain();
 });
 
+document.getElementById("arpeggioStyleSelect").addEventListener("change", () => {
+  arpeggioCurrentStep = 0;
+  updateArpeggioPaddingState();
+});
+
+document.getElementById("arpeggioPaddingToggle").addEventListener("click", () => {
+  arpeggioWidePadding = !arpeggioWidePadding;
+  arpeggioCurrentStep = 0;
+  updateArpeggioPaddingState();
+});
+
 document.getElementById("chordPicker").addEventListener("change", e => {
   chordPicker = e.target.value;
   const rhythmSubControls = document.getElementById("rhythmSubControls");
@@ -2394,6 +2479,7 @@ renderAdvChords();
 render();
 initKnobs();
 initInfoHover();
+updateArpeggioPaddingState();
 
 function pauseAudioForPageLifecycle() {
   if (!audio) return;
