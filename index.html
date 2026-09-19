@@ -703,6 +703,7 @@ let chordPicker="sustain";
 let voicingMode="default";
 let audio=null;
 let audioResumePromise=null;
+let audioWarmupStarted=false;
 let harpDragging=false;
 let activePointerId=null;
 let activeHarpPointers = new Map();
@@ -1713,6 +1714,7 @@ function resumeAudio(){
   if (audio?.ctx.state === "closed") {
     audio = null;
     audioResumePromise = null;
+    audioWarmupStarted = false;
   }
   initAudio();
   if (audio?.ctx.state === "suspended" && !audioResumePromise) {
@@ -1727,8 +1729,24 @@ function resumeAudio(){
   }
   return audio;
 }
-function ensureAudioReady(){
+
+function warmAudioOutput(){
   const currentAudio = resumeAudio();
+  if (!currentAudio || audioWarmupStarted) return currentAudio;
+  audioWarmupStarted = true;
+  const now = currentAudio.ctx.currentTime;
+  const oscillator = currentAudio.ctx.createOscillator();
+  const gain = currentAudio.ctx.createGain();
+  gain.gain.setValueAtTime(0, now);
+  oscillator.connect(gain);
+  gain.connect(currentAudio.master);
+  oscillator.start(now);
+  oscillator.stop(now + 0.02);
+  return currentAudio;
+}
+
+function ensureAudioReady(){
+  const currentAudio = warmAudioOutput();
   if (!currentAudio) return null;
   return currentAudio;
 }
@@ -2310,7 +2328,7 @@ function resumeAudioForPageLifecycle() {
 }
 
 document.addEventListener("pointerdown", () => {
-  resumeAudio();
+  warmAudioOutput();
 }, { capture: true });
 
 document.addEventListener("visibilitychange", () => {
