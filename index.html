@@ -33,7 +33,7 @@ body{
   display:flex;
   justify-content:center;
   align-items:center;
-  padding: clamp(10px, calc((100vw - 1160px) / 2), 20px);
+  padding:0;
   box-sizing:border-box;
   overflow:hidden;
 }
@@ -428,7 +428,7 @@ button:focus-visible{
         <img class="stop-icon" src="stop.svg" alt="" aria-hidden="true">
       </button>
 
-      <button class="controls-btn" id="advBtn" aria-label="Show more chords" data-info="Show more chords">
+      <button class="controls-btn active" id="advBtn" aria-label="Show piano" data-info="Show piano">
         <img class="piano-icon" src="piano.svg" alt="" aria-hidden="true">
         <img class="chord-grid-icon" src="morechords.svg" alt="" aria-hidden="true">
       </button>
@@ -588,8 +588,8 @@ button:focus-visible{
     <div id="chordArea"></div>
 
     <div id="lowerArea">
-      <div class="piano-wrap" id="pianoKeyboard"></div>
-      <div class="adv-chords-wrap" id="advChordsKeyboard" style="display:none;"></div>
+      <div class="piano-wrap" id="pianoKeyboard" style="display:none;"></div>
+      <div class="adv-chords-wrap" id="advChordsKeyboard"></div>
     </div>
   </div>
 
@@ -672,7 +672,7 @@ let activeHarpPointers = new Map();
 let harpPointerLanes = new Map();
 let sustainActive=false;
 let sustainNodes=[];
-let advMode=false;
+let advMode=true;
 
 let activeAudioNodes = new Set();
 
@@ -905,6 +905,26 @@ function updateChordDecayState() {
   }
 }
 
+function updatePianoSettingsState() {
+  const pianoSettings = [
+    document.querySelector('.knob-container[data-for="pianoVolume"]'),
+    document.querySelector('.knob-container[data-for="pianoRelease"]'),
+    document.getElementById("pianoWave")
+  ];
+
+  pianoSettings.forEach(control => {
+    if (!control) return;
+    const disabled = advMode;
+    control.style.opacity = disabled ? "0.3" : "1";
+    control.style.pointerEvents = disabled ? "none" : "auto";
+    if (control.matches("select")) {
+      control.disabled = disabled;
+    } else {
+      control.setAttribute("aria-disabled", String(disabled));
+    }
+  });
+}
+
 function formatControlValue(inputId, val) {
   if (inputId.includes("Volume")) {
     return `Vol: ${Math.round(val)}%`;
@@ -1080,6 +1100,7 @@ function initKnobs() {
     container.addEventListener('pointercancel', endDrag);
   });
   updateChordDecayState();
+  updatePianoSettingsState();
 }
 
 document.getElementById("chordVolume").addEventListener("input", () => {
@@ -1177,6 +1198,7 @@ document.getElementById("modeSelect").addEventListener("change", (e)=>{
   const id = e.target.value;
   const prevMode = selectedMode;
   selectedMode = id;
+  voicingMode = id === "chromatic" ? "default" : "voiceleading";
   if(prevMode === "chromatic" && id !== "chromatic"){
     selectedKey = currentRoot !== null ? currentRoot : 0;
   }
@@ -1205,6 +1227,7 @@ document.getElementById("keySelect").addEventListener("change", (e)=>{
         selectedMode = "major";
       }
     }
+    voicingMode = selectedMode === "chromatic" ? "default" : "voiceleading";
   }
 
   render();
@@ -1953,25 +1976,21 @@ function updateScaling(){
   if(!app) return;
   const baseWidth = 1160;
   const baseHeight = 580;
-  const availableWidth = window.innerWidth - 20;
-  const availableHeight = window.innerHeight - 20;
-  const iphoneMiniLandscape = { width: 812, height: 375 };
-  const ipadMiniLandscape = { width: 1024, height: 768 };
+  const iphone13 = { width: 844, height: 390 };
+  const ipadMini = { width: 1024, height: 768 };
   const minimumScale = Math.min(
-    (iphoneMiniLandscape.width - 20) / baseWidth,
-    (iphoneMiniLandscape.height - 20) / baseHeight
+    iphone13.width / baseWidth,
+    iphone13.height / baseHeight
   );
   const maximumScale = Math.min(
-    (ipadMiniLandscape.width - 20) / baseWidth,
-    (ipadMiniLandscape.height - 20) / baseHeight
+    ipadMini.width / baseWidth,
+    ipadMini.height / baseHeight
   );
   const viewportScale = Math.min(
-    availableWidth / baseWidth,
-    availableHeight / baseHeight
+    window.innerWidth / baseWidth,
+    window.innerHeight / baseHeight
   );
-  const scale = viewportScale < minimumScale
-    ? viewportScale
-    : Math.min(maximumScale, viewportScale);
+  const scale = Math.max(minimumScale, Math.min(maximumScale, viewportScale));
 
   app.style.transform = `scale(${scale})`;
 }
@@ -2136,6 +2155,7 @@ advBtn.addEventListener("click", (e) => {
   }
   document.getElementById("pianoKeyboard").style.display = advMode ? "none" : "flex";
   document.getElementById("advChordsKeyboard").style.display = advMode ? "flex" : "none";
+  updatePianoSettingsState();
 });
 
 document.getElementById("chordWave").addEventListener("change", () => {
