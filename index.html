@@ -666,6 +666,7 @@ let currentType="major";
 let chordPicker="sustain";
 let voicingMode="default";
 let audio=null;
+let audioResumePromise=null;
 let harpDragging=false;
 let activePointerId=null;
 let activeHarpPointers = new Map();
@@ -782,19 +783,24 @@ function buildMidiBlob(events) {
   return new Blob([fullBuffer], { type: "audio/midi" });
 }
 
-function stopAllPlayback() {
+function stopAllPlayback(immediate = false) {
   if (!audio) return;
   const now = audio.ctx.currentTime;
   activeAudioNodes.forEach(node => {
     try {
       node.gain.gain.cancelScheduledValues(now);
-      node.gain.gain.linearRampToValueAtTime(0.0001, now + 0.05);
-      node.osc.stop(now + 0.1);
+      if (immediate) {
+        node.gain.gain.setValueAtTime(0, now);
+        node.osc.stop(now + 0.01);
+      } else {
+        node.gain.gain.linearRampToValueAtTime(0.0001, now + 0.05);
+        node.osc.stop(now + 0.1);
+      }
     } catch(e) {}
   });
   activeAudioNodes.clear();
   
-  stopSustain();
+  stopSustain(immediate);
   stopRhythm();
   stopArpeggio();
 }
@@ -1111,7 +1117,7 @@ document.getElementById("chordVolume").addEventListener("input", () => {
     sustainNodes.forEach(n => {
       n.gain.gain.cancelScheduledValues(now);
       n.gain.gain.setValueAtTime(n.gain.gain.value, now);
-      n.gain.gain.linearRampToValueAtTime(Math.max(0.0001, peakVol), now + 0.05);
+      n.gain.gain.linearRampToValueAtTime(Math.max(0.0001, peakVol), now + 0.005);
     });
   }
 });
@@ -1314,14 +1320,15 @@ function renderAdvChords(){
   });
 }
 
-function selectChord(root, type){
+async function selectChord(root, type){
   const isSame = (root === currentRoot && type === currentType);
   currentRoot = root;
   currentType = type;
-  handleChordPlay(isSame);
+  await handleChordPlay(isSame);
 }
 
-function handleChordPlay(isSame) {
+async function handleChordPlay(isSame) {
+  if (!await ensureAudioReady()) return;
   if (chordPicker === "rhythm") {
     stopSustain();
     stopArpeggio();
@@ -1379,8 +1386,8 @@ let activePianoPointers = new Map();
 let activePianoKeys = new Map();
 let lastPianoKey=-1;
 
-function playPianoNote(midi, keyEl) {
-    resumeAudio();
+async function playPianoNote(midi, keyEl) {
+    if (!await ensureAudioReady()) return;
     const pianoVolFactor = Number(document.getElementById("pianoVolume").value)/100;
     const vol = 0.16 * pianoVolFactor;
     playTone(midi, vol, null, getPianoWave(), getPianoRelease(), null, 2);
@@ -1438,9 +1445,9 @@ function initPiano(){
     container.appendChild(key);
   }
 
-  container.addEventListener("pointerdown", e => {
+  container.addEventListener("pointerdown", async e => {
     e.preventDefault();
-    resumeAudio();
+    if (!await ensureAudioReady()) return;
     pianoDragging = true;
     activePianoPointers.set(e.pointerId, { x: e.clientX, y: e.clientY });
     activePianoPointerId = e.pointerId;
@@ -1653,33 +1660,64 @@ function updateInfo(isActive=true){
 function initAudio(){
   const Ctx=window.AudioContext||window.webkitAudioContext;
   if(!Ctx||audio)return;
-  const ctx=new Ctx({ latencyHint: "interactive" });
+  let ctx;
+  try {
+    ctx = new Ctx({ latencyHint: "interactive" });
+  } catch (err) {
+    console.warn("Audio context initialization with latency hint failed:", err);
+    ctx = new Ctx();
+  }
   const master=ctx.createGain();
   master.gain.value = 1.0;
   master.connect(ctx.destination);
   audio={ctx,master};
 }
 function resumeAudio(){
-  if (audio?.ctx.state === "closed") audio = null;
-  initAudio();
-  if (audio?.ctx.state === "suspended") {
-    audio.ctx.resume().catch(err => console.warn("Audio context resume failed:", err));
+  if (audio?.ctx.state === "closed") {
+    audio = null;
+    audioResumePromise = null;
   }
+  initAudio();
   return audio;
+}
+async function ensureAudioReady(){
+  const currentAudio = resumeAudio();
+  if (!currentAudio) return null;
+  if (currentAudio.ctx.state !== "running") {
+    if (!audioResumePromise) {
+      audioResumePromise = currentAudio.ctx.resume()
+        .catch(err => {
+          console.warn("Audio context resume failed:", err);
+          return false;
+        })
+        .finally(() => {
+          audioResumePromise = null;
+        });
+    }
+    try {
+      if (!await audioResumePromise || currentAudio.ctx.state !== "running") {
+        return null;
+      }
+    } catch (err) {
+      console.warn("Audio context resume failed:", err);
+      return null;
+    }
+  }
+  return currentAudio;
 }
 function midiFreq(m){return 440*Math.pow(2,(m-69)/12)}
 
 function playTone(midi, volume=.13, dest, waveType="square", decayTime=.25, scheduledTime=null, channel=0){
-  resumeAudio(); if(!audio)return null;
+  if(!audio || audio.ctx.state !== "running") return null;
   const o = audio.ctx.createOscillator(), g = audio.ctx.createGain();
   const t = (scheduledTime !== null && scheduledTime >= audio.ctx.currentTime) ? scheduledTime : audio.ctx.currentTime;
   o.type = ["sine","square","sawtooth","triangle"].includes(waveType) ? waveType : "square";
   o.frequency.value = midiFreq(midi);
   
   g.gain.setValueAtTime(.0001, t);
-  g.gain.linearRampToValueAtTime(Math.max(.0001,volume), t+.015);
+  g.gain.linearRampToValueAtTime(Math.max(.0001,volume), t+.005);
   
-  const totalDuration = 0.015 + Math.max(0.01, decayTime);
+  const totalDuration = 0.005 + Math.max(0.01, decayTime);
   g.gain.exponentialRampToValueAtTime(.0001, t + totalDuration);
   
   o.connect(g);g.connect(dest||audio.master);
@@ -1833,15 +1871,20 @@ function scheduleArpeggioStep(time) {
   playTone(midi, vol, null, activeWave, decay, time, 0);
 }
 
-function stopSustain(){
+function stopSustain(immediate = false){
   if(!audio)return;
   const now=audio.ctx.currentTime;
   sustainNodes.forEach(n=>{
     try{
       n.gain.gain.cancelScheduledValues(now);
-      n.gain.gain.setValueAtTime(n.gain.gain.value,now);
-      n.gain.gain.exponentialRampToValueAtTime(.0001,now+.1);
-      n.osc.stop(now+.15);
+      if (immediate) {
+        n.gain.gain.setValueAtTime(0, now);
+        n.osc.stop(now + 0.01);
+      } else {
+        n.gain.gain.setValueAtTime(n.gain.gain.value,now);
+        n.gain.gain.exponentialRampToValueAtTime(.0001,now+.1);
+        n.osc.stop(now+.15);
+      }
     }catch(e){}
   });
 
@@ -1898,7 +1941,7 @@ function startSustain(){
     o.type = activeWave;
     o.frequency.value=midiFreq(midi);
     g.gain.setValueAtTime(.0001,now);
-    g.gain.exponentialRampToValueAtTime(peakVol,now+.05);
+    g.gain.exponentialRampToValueAtTime(peakVol,now+.005);
     o.connect(g);g.connect(audio.master);
     o.start(now);
     sustainNodes.push({osc:o,gain:g});
@@ -1976,21 +2019,11 @@ function updateScaling(){
   if(!app) return;
   const baseWidth = 1160;
   const baseHeight = 580;
-  const iphone13 = { width: 844, height: 390 };
-  const ipadMini = { width: 1024, height: 768 };
-  const minimumScale = Math.min(
-    iphone13.width / baseWidth,
-    iphone13.height / baseHeight
-  );
-  const maximumScale = Math.min(
-    ipadMini.width / baseWidth,
-    ipadMini.height / baseHeight
-  );
   const viewportScale = Math.min(
     window.innerWidth / baseWidth,
     window.innerHeight / baseHeight
   );
-  const scale = Math.max(minimumScale, Math.min(maximumScale, viewportScale));
+  const scale = Math.min(1, viewportScale);
 
   app.style.transform = `scale(${scale})`;
 }
@@ -2020,9 +2053,9 @@ function handlePointerDrag(e){
 }
 
 const harpGridEl=document.getElementById("harpGrid");
-harpGridEl.addEventListener("pointerdown",e=>{
+harpGridEl.addEventListener("pointerdown",async e=>{
   e.preventDefault();
-  resumeAudio();
+  if (!await ensureAudioReady()) return;
   harpDragging=true;
   activePointerId=e.pointerId;
   activeHarpPointers.set(e.pointerId, { x: e.clientX, y: e.clientY });
@@ -2231,14 +2264,14 @@ initInfoHover();
 
 function pauseAudioForPageLifecycle() {
   if (!audio) return;
-  stopAllPlayback();
+  stopAllPlayback(true);
   if (audio.ctx.state === "running") {
     audio.ctx.suspend().catch(err => console.warn("Audio context suspend failed:", err));
   }
 }
 
 function resumeAudioForPageLifecycle() {
-  if (audio) resumeAudio();
+  // Safari may reject resume() here because returning to the page is not a user gesture.
 }
 
 document.addEventListener("pointerdown", () => {
