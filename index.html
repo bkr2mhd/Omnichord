@@ -1324,6 +1324,7 @@ async function selectChord(root, type){
   const isSame = (root === currentRoot && type === currentType);
   currentRoot = root;
   currentType = type;
+  updateInfo(false);
   await handleChordPlay(isSame);
 }
 
@@ -1678,6 +1679,16 @@ function resumeAudio(){
     audioResumePromise = null;
   }
   initAudio();
+  if (audio?.ctx.state === "suspended" && !audioResumePromise) {
+    audioResumePromise = audio.ctx.resume()
+      .catch(err => {
+        console.warn("Audio context resume failed:", err);
+        return false;
+      })
+      .finally(() => {
+        audioResumePromise = null;
+      });
+  }
   return audio;
 }
 async function ensureAudioReady(){
@@ -1685,17 +1696,13 @@ async function ensureAudioReady(){
   if (!currentAudio) return null;
   if (currentAudio.ctx.state !== "running") {
     if (!audioResumePromise) {
-      audioResumePromise = currentAudio.ctx.resume()
-        .catch(err => {
-          console.warn("Audio context resume failed:", err);
-          return false;
-        })
-        .finally(() => {
-          audioResumePromise = null;
-        });
+      resumeAudio();
     }
     try {
-      if (!await audioResumePromise || currentAudio.ctx.state !== "running") {
+      if (audioResumePromise && !await audioResumePromise) {
+        return null;
+      }
+      if (currentAudio.ctx.state !== "running") {
         return null;
       }
     } catch (err) {
