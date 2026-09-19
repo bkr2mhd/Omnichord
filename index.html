@@ -84,12 +84,12 @@ select{border:0;outline:none;background:#1c1c1e;color:#f2f2f7;font-size:12px;col
   background:#3a3a3c;
 }
 .dialogue-btn.primary{
-  border-color:#0a84ff;
+  border-color:#3a3a3c;
   color:#0a84ff;
 }
 .dialogue-btn.primary:hover, .dialogue-btn.primary:active, .dialogue-btn.primary.active{
   background:#3a3a3c;
-  border-color:#0a84ff;
+  border-color:#3a3a3c;
   color:#ffffff;
 }
 .dialogue-btn.danger{
@@ -103,7 +103,7 @@ select{border:0;outline:none;background:#1c1c1e;color:#f2f2f7;font-size:12px;col
 .section-label-header{font-size:10px;font-weight:700;color:#636366;text-transform:uppercase;letter-spacing:.8px;margin-top:4px;padding-left:2px;}
 
 .top-toolbar{
-  background:#1c1c1e;border:1px solid #2c2c2e;border-radius:14px;padding:8px 12px;
+  background:#1c1c1e;border:1px solid #2c2c2e;border-radius:14px;padding:8px 16px;
   display:flex;align-items:center;justify-content:space-between;gap:8px;width:100%;height:92px;flex-shrink:0;position:relative;overflow:visible;
 }
 
@@ -117,7 +117,27 @@ select{border:0;outline:none;background:#1c1c1e;color:#f2f2f7;font-size:12px;col
   flex-shrink:0;transition:background .15s, border-color .15s;font-size:16px;
 }
 .controls-btn:hover{background:#3a3a3c}
-.controls-btn.active{background:#3a3a3c;border-color:#0a84ff;}
+.controls-btn.active{background:#3a3a3c;border-color:#3a3a3c;}
+.controls-btn:focus,
+.dialogue-btn:focus,
+.chromatic-highlight-ctrl-btn:focus,
+button:focus-visible{
+  outline:none;
+}
+.controls-btn img{width:16px;height:16px;display:block;object-fit:contain;flex:none;}
+.controls-btn .piano-icon,.controls-btn .chord-grid-icon{width:16px;height:16px;}
+.controls-btn .record-icon,.controls-btn #menuIcon{width:16px;height:16px;}
+.controls-btn .stop-icon{width:14px;height:14px;}
+.controls-btn .stop-icon{display:none;}
+.controls-btn.recording .record-icon{display:none;}
+.controls-btn.recording .stop-icon{display:block;}
+.controls-btn svg{width:17px;height:17px;display:block;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;}
+.controls-btn svg.piano-icon,
+.controls-btn svg.piano-icon *{stroke:none;stroke-width:0;stroke-linecap:butt;stroke-linejoin:miter;}
+.controls-btn .piano-icon{display:none;}
+.controls-btn .chord-grid-icon{display:block;}
+.controls-btn.active .piano-icon{display:block;}
+.controls-btn.active .chord-grid-icon{display:none;}
 
 .rec-btn{position:relative;}
 .rec-dot{
@@ -161,6 +181,22 @@ select{border:0;outline:none;background:#1c1c1e;color:#f2f2f7;font-size:12px;col
   padding:0 4px;white-space:nowrap;flex-shrink:0;
 }
 .chromatic-highlight-ctrl-btn:hover{background:#2c2c2e}
+.chromatic-highlight-ctrl-btn.highlight-state{
+  color:#8e8e93;
+  border-color:#2c2c2e;
+}
+.chromatic-highlight-ctrl-btn.lock-state{
+  color:#30d158;
+  border-color:#30d158;
+}
+.chromatic-highlight-ctrl-btn.clear-state{
+  color:#ff453a;
+  border-color:#ff453a;
+}
+.chromatic-highlight-ctrl-btn.voicing-state{
+  color:#30d158;
+  border-color:#30d158;
+}
 
 .select-wrap-sm{
   background:#111113;border:1px solid #2c2c2e;border-radius:6px;
@@ -365,6 +401,7 @@ select{border:0;outline:none;background:#1c1c1e;color:#f2f2f7;font-size:12px;col
 .harp-lane:last-child{border-bottom:0}
 .harp-lane:hover{background:#2c2c2e}
 .harp-lane.played{background:#3a3a3c}
+
 </style>
 </head>
 <body>
@@ -383,12 +420,18 @@ select{border:0;outline:none;background:#1c1c1e;color:#f2f2f7;font-size:12px;col
 <div class="app" id="appContainer">
   <div class="center-content" id="centerContent">
     <div class="top-toolbar">
-      <button class="controls-btn" id="menuBtn">☰</button>
-      <button class="controls-btn rec-btn" id="recordToggle">
-        <span class="rec-dot"></span>
+      <button class="controls-btn" id="menuBtn" aria-label="Menu" data-info="Menu">
+        <img id="menuIcon" src="menu.svg" alt="" aria-hidden="true">
+      </button>
+      <button class="controls-btn rec-btn" id="recordToggle" aria-label="Record MIDI" data-info="Record MIDI">
+        <img class="record-icon" src="record.svg" alt="" aria-hidden="true">
+        <img class="stop-icon" src="stop.svg" alt="" aria-hidden="true">
       </button>
 
-      <button class="controls-btn" id="advBtn">+</button>
+      <button class="controls-btn" id="advBtn" aria-label="Show more chords" data-info="Show more chords">
+        <img class="piano-icon" src="piano.svg" alt="" aria-hidden="true">
+        <img class="chord-grid-icon" src="morechords.svg" alt="" aria-hidden="true">
+      </button>
 
       <div class="info-compact">
         <div class="current" id="current">C Major</div>
@@ -400,13 +443,13 @@ select{border:0;outline:none;background:#1c1c1e;color:#f2f2f7;font-size:12px;col
       <div class="selectors-stack">
         <div class="selectors-desktop">
           <div style="display:flex; gap:4px; width:100%; align-items:center;">
-            <div class="select-wrap-sm" style="width:125px;">
-              <label for="modeSelect">mode</label>
-              <select id="modeSelect"></select>
-            </div>
             <div class="select-wrap-sm" id="keySelectWrap" style="flex:1;">
               <label for="keySelect">key</label>
               <select id="keySelect"></select>
+            </div>
+            <div class="select-wrap-sm" style="width:125px;">
+              <label for="modeSelect">mode</label>
+              <select id="modeSelect"></select>
             </div>
           </div>
           <div style="display:flex; gap:4px; width:100%; align-items:center;">
@@ -937,7 +980,8 @@ function showHoveredInfo(element) {
   }
 
   if (element.matches("button")) {
-    document.getElementById("current").textContent = titleCase(element.textContent.trim() || "Button");
+    const info = element.dataset.info || element.getAttribute("aria-label") || element.title || element.textContent.trim() || "Button";
+    document.getElementById("current").textContent = titleCase(info);
     document.getElementById("notes").textContent = "";
   }
 }
@@ -1075,8 +1119,6 @@ function renderSelectors(){
 
   const placeholder = document.createElement("option");
   placeholder.value = "";
-  placeholder.disabled = true;
-  placeholder.hidden = true;
   placeholder.textContent = "-";
   if (selectedKey === null) placeholder.selected = true;
   keySelect.appendChild(placeholder);
@@ -1105,30 +1147,28 @@ function renderSelectors(){
   if(selectedMode === "chromatic"){
     if(chromaticHighlightState === 0){
       advHighlightBtn.textContent = "+ Highlight";
-      advHighlightBtn.style.background = "#1c1c1e";
-      advHighlightBtn.style.color = "#8e8e93";
+      advHighlightBtn.style.borderColor = "";
+      advHighlightBtn.className = "chromatic-highlight-ctrl-btn highlight-state";
     } else if(chromaticHighlightState === 1){
       advHighlightBtn.textContent = "✓ Lock";
-      advHighlightBtn.style.background = "#3a3a3c";
-      advHighlightBtn.style.color = "#fff";
+      advHighlightBtn.style.borderColor = "";
+      advHighlightBtn.className = "chromatic-highlight-ctrl-btn lock-state";
     } else {
       advHighlightBtn.textContent = "✕ Clear";
-      advHighlightBtn.style.background = "#2c2c2e";
-      advHighlightBtn.style.color = "#f2f2f7";
+      advHighlightBtn.style.borderColor = "";
+      advHighlightBtn.className = "chromatic-highlight-ctrl-btn clear-state";
     }
   }
 
   if (voicingBtn) {
     if (voicingMode === "voiceleading") {
-      voicingBtn.textContent = "Voicing: Lead";
-      voicingBtn.style.background = "#3a3a3c";
-      voicingBtn.style.color = "#fff";
-      voicingBtn.style.borderColor = "#0a84ff";
+      voicingBtn.textContent = "Voice Leading";
+      voicingBtn.style.borderColor = "";
+      voicingBtn.className = "chromatic-highlight-ctrl-btn voicing-state";
     } else {
-      voicingBtn.textContent = "Voicing: Default";
-      voicingBtn.style.background = "#1c1c1e";
-      voicingBtn.style.color = "#8e8e93";
-      voicingBtn.style.borderColor = "#2c2c2e";
+      voicingBtn.textContent = "Root Positions";
+      voicingBtn.style.borderColor = "";
+      voicingBtn.className = "chromatic-highlight-ctrl-btn";
     }
   }
 }
@@ -1150,7 +1190,10 @@ document.getElementById("modeSelect").addEventListener("change", (e)=>{
 });
 
 document.getElementById("keySelect").addEventListener("change", (e)=>{
-  if (e.target.value !== "") {
+  if (e.target.value === "") {
+    selectedKey = null;
+    selectedMode = "chromatic";
+  } else {
     selectedKey = Number(e.target.value);
 
     if (selectedMode === "chromatic") {
@@ -1162,11 +1205,11 @@ document.getElementById("keySelect").addEventListener("change", (e)=>{
         selectedMode = "major";
       }
     }
+  }
 
-    render();
-    if (sustainActive) {
-      startSustain();
-    }
+  render();
+  if (sustainActive) {
+    startSustain();
   }
 });
 
@@ -2018,10 +2061,14 @@ recordToggle.addEventListener("click", (e) => {
     recordedEvents = [];
     recordToggle.classList.add("recording");
     recordToggle.title = "Stop Recording";
+    recordToggle.dataset.info = "Stop Recording";
+    recordToggle.setAttribute("aria-label", "Stop Recording");
   } else {
     isRecording = false;
     recordToggle.classList.remove("recording");
     recordToggle.title = "Record MIDI";
+    recordToggle.dataset.info = "Record MIDI";
+    recordToggle.setAttribute("aria-label", "Record MIDI");
     
     if (sustainMidiNotes.length > 0) {
       sustainMidiNotes.forEach(m => recordMidiEvent(0x80, m, 0, 0, recordSessionId));
@@ -2080,8 +2127,12 @@ advBtn.addEventListener("click", (e) => {
   advMode = !advMode;
   if (advMode) {
     advBtn.classList.add("active");
+    advBtn.dataset.info = "Show piano";
+    advBtn.setAttribute("aria-label", "Show piano");
   } else {
     advBtn.classList.remove("active");
+    advBtn.dataset.info = "Show more chords";
+    advBtn.setAttribute("aria-label", "Show more chords");
   }
   document.getElementById("pianoKeyboard").style.display = advMode ? "none" : "flex";
   document.getElementById("advChordsKeyboard").style.display = advMode ? "flex" : "none";
